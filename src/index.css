@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+* {
+    font-family: "Lexend Deca", sans-serif;
+}
+
+:root {
+    --color-primary: #560e31;
+}
+
+.primary-text-color {
+    color: var(--color-primary);
+}
