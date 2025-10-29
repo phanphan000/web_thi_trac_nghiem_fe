@@ -1,11 +1,20 @@
 import React from "react";
 import Header from "../components/Header";
+import { Outlet } from "react-router-dom";
+import "../index.css";
 
-const MainLayout = ({ children, isLoggedIn, onLogout }) => {
+const MainLayout = ({ isLoggedIn, onLogin, onLogout, onRegisterClick }) => {
   return (
     <div>
-      <Header isLoggedIn={isLoggedIn} onLogout={onLogout} />
-      <main className="h-screen bg-[#fef7ef]">{children}</main>
+      <Header
+        isLoggedIn={isLoggedIn}
+        onLogin={onLogin}
+        onLogout={onLogout}
+        onRegisterClick={onRegisterClick}
+      />
+      <main className="min-h-screen  bg-[var(--color-background)]">
+        <Outlet />
+      </main>
     </div>
   );
 };

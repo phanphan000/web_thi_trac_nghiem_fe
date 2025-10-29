@@ -1,30 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
-const sections = [
-  {
-    id: 0,
-    component: <Section1 />,
-    backgroundUrl: "/assets/students/Slide 2/Slide 2.3.png",
-  },
-  {
-    id: 1,
-    component: <Section2 />,
-    backgroundUrl: null,
-  },
-  { id: 2, component: <Section3 /> },
-  { id: 3, component: <Section4 /> },
-  {
-    id: 4,
-    component: <Section5 />,
-    backgroundUrl: "/assets/students/Slide 2/Slide 2.3.png",
-  },
-];
-
-function Section1() {
+function Section1({ goToSection }) {
   return (
     <div className="h-full mx-10 flex items-center justify-between">
-      <div className="w-3/5">
+      <img
+        src="/assets/students/Slide 2/Slide 2.3.png"
+        alt="Login Background"
+        className="absolute inset-0 w-full h-full object-contain object-bottom z-0"
+      />
+      <div className="w-3/5 z-10">
         <h1 className="text-7xl mb-6 primary-text-color text-center">
           WELCOME TO
         </h1>
@@ -40,29 +27,29 @@ function Section1() {
       </div>
 
       <div className="w-2/5">
-        <a
-          href="#"
-          class="flex items-center justify-center py-6 px-4 mb-40 rounded-4xl font-bold text-4xl
+        <button
+          onClick={() => goToSection(4)}
+          className="flex items-center justify-center py-6 px-4 mb-40 rounded-4xl font-bold text-4xl
            bg-[#ef7131] text-white shadow-xl w-fit"
         >
           JOIN NOW FOR FREE
-        </a>
+        </button>
       </div>
     </div>
   );
 }
 function Section2() {
   return (
-    <div className="h-full w-full flex items-end justify-between absolute z-100">
+    <div className="h-full w-full flex justify-between absolute z-100 pt-50">
       <div className="w-1/2 relative">
         <img
-          src="/public/assets/students/Slide 3/Slide 3.1.png"
+          src="/assets/students/Slide 3/Slide 3.1.png"
           alt="Slide 3.1.png"
           className="object-cover w-full"
         />
         <div className="absolute bottom-30 left-0 w-24 h-24 w-70">
           <img
-            src="/public/assets/students/Slide 3/Slide 3.2.png"
+            src="/assets/students/Slide 3/Slide 3.2.png"
             alt="Slide 3.2.png"
           />
         </div>
@@ -72,7 +59,7 @@ function Section2() {
           <div
             className="inline-flex flex-col justify-center items-center 
                  bg-contain bg-center bg-no-repeat 
-                 px-30 
+                 px-20 
                  text-center"
             style={{
               backgroundImage: "url('/assets/students/Slide 3/Slide 3.4.png')",
@@ -110,7 +97,7 @@ function Section2() {
 function Section3() {
   return (
     <>
-      <div className="h-full mx-10 flex items-end justify-between relative">
+      <div className="h-full mx-10 flex justify-between relative pt-35">
         <div className="text-center w-full">
           <div className="mb-1">
             <h1 className="text-6xl primary-text-color">
@@ -206,7 +193,7 @@ function Section3() {
 function Section4() {
   return (
     <>
-      <div className="h-full mx-10 flex items-end justify-between relative">
+      <div className="h-full mx-10 flex justify-between relative pt-35">
         <div className="text-center w-full">
           <div className="mb-1">
             <h1 className="text-6xl primary-text-color">
@@ -311,18 +298,18 @@ function Section4() {
   );
 }
 function Section5() {
-  // xử lí form đăng kí
   const [formData, setFormData] = useState({
     fullName: "",
-    birthDate: "",
+    birthDate: null,
     className: "",
     username: "",
     password: "",
   });
 
   const [message, setMessage] = useState("");
+  const [showCalendar, setShowCalendar] = useState(false);
 
-  const handleChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -330,10 +317,17 @@ function Section5() {
     }));
   };
 
+  const handleDateChange = (date) => {
+    setFormData((prev) => ({
+      ...prev,
+      birthDate: date,
+    }));
+    setShowCalendar(false);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validation
     if (
       !formData.fullName ||
       !formData.birthDate ||
@@ -350,15 +344,13 @@ function Section5() {
       return;
     }
 
-    // Xử lý đăng ký (giả lập)
     console.log("Đăng ký thành công:", formData);
     setMessage("Đăng ký thành công! 🎉");
 
-    // Reset form sau 2 giây
     setTimeout(() => {
       setFormData({
         fullName: "",
-        birthDate: "",
+        birthDate: null,
         className: "",
         username: "",
         password: "",
@@ -366,111 +358,150 @@ function Section5() {
       setMessage("");
     }, 2000);
   };
+
   return (
-    <>
-      <div className="h-full mx-10 flex items-end justify-between relative">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-5 text-center">
-            <h1 className="text-6xl primary-text-color">Đăng Kí</h1>
+    <div className="h-full mx-10 flex justify-between relative pt-40">
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-5 text-center">
+          <h1 className="text-6xl primary-text-color">Đăng Kí</h1>
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Họ tên */}
+          <div className="flex items-center gap-8">
+            <label className="primary-text-color text-2xl w-48">Họ tên</label>
+            <input
+              type="text"
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleInputChange}
+              className="px-20 py-4 text-center rounded-full border-2 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-lg w-[500px]"
+            />
           </div>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="flex items-center gap-8 ">
-              <label className="primary-text-color text-2xl w-48">Họ tên</label>
+
+          {/* Ngày sinh */}
+          <div className="flex items-center gap-8 relative">
+            <label className="primary-text-color text-2xl w-48">
+              Ngày sinh
+            </label>
+            <div className="w-[500px]">
               <input
                 type="text"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleChange}
-                className="w-full flex-1 px-40 py-4 rounded-full border-3 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-lg"
+                readOnly
+                value={
+                  formData.birthDate
+                    ? formData.birthDate.toLocaleDateString("vi-VN")
+                    : ""
+                }
+                onClick={() => setShowCalendar(!showCalendar)}
+                className="w-full px-10 py-4 text-center rounded-full border-2 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-lg cursor-pointer"
               />
+              {showCalendar && (
+                <div className="absolute z-50 mt-2 shadow-lg border border-orange-300 rounded-lg bg-white">
+                  <Calendar
+                    onChange={handleDateChange}
+                    value={formData.birthDate}
+                    locale="vi-VN"
+                    className="p-4"
+                  />
+                </div>
+              )}
             </div>
-
-            <div className="flex items-center gap-8">
-              <label className="primary-text-color text-2xl w-48">
-                Ngày sinh
-              </label>
-              <input
-                type="text"
-                name="birthDate"
-                value={formData.birthDate}
-                onChange={handleChange}
-                className="flex-1 px-40 py-4 rounded-full border-3 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-lg"
-              />
-            </div>
-
-            <div className="flex items-center gap-8">
-              <label className="primary-text-color text-2xl w-48">Lớp</label>
-              <input
-                type="text"
-                name="className"
-                value={formData.className}
-                onChange={handleChange}
-                className="flex-1 px-40 py-4 rounded-full border-3 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-lg"
-              />
-            </div>
-
-            <div className="flex items-center gap-8">
-              <label className="primary-text-color text-2xl w-48">
-                Tên đăng nhập
-              </label>
-              <input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                className="flex-1 px-40 py-4 rounded-full border-3 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-lg"
-              />
-            </div>
-
-            <div className="flex items-center gap-8">
-              <label className="primary-text-color text-2xl w-48">
-                Mật khẩu
-              </label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="flex-1 px-40 py-4 rounded-full border-3 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-lg"
-              />
-            </div>
-
-            <div className="flex justify-center mt-8">
-              <button
-                type="submit"
-                className="bg-gradient-to-r bg-[#ef7131] text-white font-semibold text-xl px-30 py-5 ml-10 rounded-full hover:from-purple-600 hover:to-pink-600 transition-all transform hover:scale-105 shadow-lg mb-10"
-              >
-                Đăng ký
-              </button>
-            </div>
-
-            {message && (
-              <div
-                className={`text-center text-lg font-semibold ${
-                  message.includes("thành công")
-                    ? "text-green-600"
-                    : "text-red-600"
-                }`}
-              >
-                {message}
-              </div>
-            )}
-          </form>
-
-          {/* Decorative circle */}
-          <div className="fixed bottom-8 right-8">
-            <div className="w-24 h-24 bg-gradient-to-br from-pink-400 to-pink-500 rounded-full shadow-lg"></div>
           </div>
+
+          {/* Lớp */}
+          <div className="flex items-center gap-8">
+            <label className="primary-text-color text-2xl w-48">Lớp</label>
+            <input
+              type="text"
+              name="className"
+              value={formData.className}
+              onChange={handleInputChange}
+              className="px-20 py-4 text-center rounded-full border-2 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-lg w-[500px]"
+            />
+          </div>
+
+          {/* Tên đăng nhập */}
+          <div className="flex items-center gap-8">
+            <label className="primary-text-color text-2xl w-48">
+              Tên đăng nhập
+            </label>
+            <input
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleInputChange}
+              className="px-20 py-4 text-center rounded-full border-2 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-lg w-[500px]"
+            />
+          </div>
+
+          {/* Mật khẩu */}
+          <div className="flex items-center gap-8">
+            <label className="primary-text-color text-2xl w-48">Mật khẩu</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              className="px-20 py-4 text-center rounded-full border-2 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-lg w-[500px]"
+            />
+          </div>
+
+          {/* Nút đăng ký */}
+          <div className="flex justify-center mt-8">
+            <button
+              type="submit"
+              className="bg-[#ef7131] text-white font-semibold text-xl px-20 py-5 ml-10 rounded-full cursor-pointer hover:from-purple-600 hover:to-pink-600 transition-all transform hover:scale-105 shadow-lg mb-10"
+            >
+              Đăng ký
+            </button>
+          </div>
+
+          {/* Thông báo */}
+          {message && (
+            <div
+              className={`text-center text-lg font-semibold ${
+                message.includes("thành công")
+                  ? "text-green-600"
+                  : "text-red-600"
+              }`}
+            >
+              {message}
+            </div>
+          )}
+        </form>
+
+        {/* Decorative circle */}
+        <div className="fixed bottom-8 right-8">
+          <div className="w-24 h-24 bg-gradient-to-br from-pink-400 to-pink-500 rounded-full shadow-lg"></div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
-export default function SmoothFullpageScroll() {
+export default function SmoothFullpageScroll({ goToSection }) {
   const [currentSection, setCurrentSection] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
   const touchStartY = useRef(0);
+
+  const sections = [
+    {
+      id: 0,
+      component: <Section1 goToSection={(id) => setCurrentSection(id)} />,
+    },
+    {
+      id: 1,
+      component: <Section2 />,
+      backgroundUrl: null,
+    },
+    { id: 2, component: <Section3 /> },
+    { id: 3, component: <Section4 /> },
+    {
+      id: 4,
+      component: <Section5 />,
+      backgroundUrl: "/assets/students/Slide 2/Slide 2.3.png",
+    },
+  ];
 
   useEffect(() => {
     let scrollTimeout;
@@ -533,6 +564,13 @@ export default function SmoothFullpageScroll() {
       return () => clearTimeout(timer);
     }
   }, [isScrolling]);
+
+  useEffect(() => {
+    if (goToSection !== null && goToSection !== currentSection) {
+      setCurrentSection(goToSection);
+      setIsScrolling(true);
+    }
+  }, [goToSection, currentSection]);
 
   return (
     <div className="relative w-full h-screen overflow-hidden">

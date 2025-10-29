@@ -6,8 +6,14 @@
 
 :root {
     --color-primary: #560e31;
+    --color-secondary: #ef7131;
+    --color-background: #fef7ef;
 }
 
 .primary-text-color {
+    color: var(--color-primary);
+}
+
+.secondary-text-color {
     color: var(--color-primary);
 }
