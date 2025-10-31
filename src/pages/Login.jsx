@@ -46,10 +46,10 @@ const Login = ({ onLogin }) => {
         className="absolute inset-0 w-full h-full object-contain object-bottom z-0"
       />
       <div className="max-w-4xl mx-auto z-10">
-        <div className="mb-5 text-center">
+        <div className="text-center mb-10">
           <h1 className="text-6xl primary-text-color">Đăng Nhập</h1>
         </div>
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleLogin} className="space-y-8">
           {/* Tên đăng nhập */}
           <div className="flex items-center gap-8">
             <label className="primary-text-color text-2xl w-48">
@@ -59,18 +59,6 @@ const Login = ({ onLogin }) => {
               type="text"
               name="username"
               value={formData.username}
-              onChange={handleInputChange}
-              className="px-20 py-4 text-center rounded-full border-2 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-lg w-[500px]"
-            />
-          </div>
-
-          {/* Lớp */}
-          <div className="flex items-center gap-8">
-            <label className="primary-text-color text-2xl w-48">Lớp</label>
-            <input
-              type="text"
-              name="className"
-              value={formData.className}
               onChange={handleInputChange}
               className="px-20 py-4 text-center rounded-full border-2 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-lg w-[500px]"
             />

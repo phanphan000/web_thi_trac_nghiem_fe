@@ -44,14 +44,17 @@ const Header = ({ isLoggedIn, onLogout, onRegisterClick }) => {
           </nav>
         ) : (
           // Nếu đã đăng nhập
-          <nav className="flex items-center gap-20 justify-end text-xl primary-text-color">
+          <nav className="flex items-center gap-20 justify-end text-2xl primary-text-color">
             <Link to="/test" className="hover:text-[var(--color-secondary)]">
               Test
             </Link>
-            <Link to="#" className="hover:text-[var(--color-secondary)]">
+            <Link
+              to="/subjects"
+              className="hover:text-[var(--color-secondary)]"
+            >
               Môn học
             </Link>
-            <Link to="#" className="hover:text-[var(--color-secondary)]">
+            <Link to="/tool" className="hover:text-[var(--color-secondary)]">
               Công cụ
             </Link>
             <Link to="#" className="hover:text-[var(--color-secondary)]">
