@@ -16,8 +16,10 @@ import Exam from "./pages/students/test/exam";
 //import các trang học sinh-->subjects
 import SubjectList from "./pages/students/subjects/SubjectList";
 import LearningMethods from "./pages/students/subjects/LearningMethods";
-//import các trang học sinh-->subjects-->math-->music
-import TopicMusicDetail from "./pages/students/subjects/math/music/TopicMusicDetail";
+//import các trang học sinh-->subjects-->math,tin, k/học-->music
+import TopicMathMusicDetail from "./pages/students/subjects/math/music/TopicMathMusicDetail";
+import TopicInforMusicDetail from "./pages/students/subjects/informatics/music/TopicInforMusicDetail";
+import TopicScienceMusicDetail from "./pages/students/subjects/science/music/TopicScienceMusicDetail";
 
 function App() {
   const [goToSection, setGoToSection] = useState(null);
@@ -65,7 +67,15 @@ function App() {
             <Route path="/subjects/:subjectId" element={<LearningMethods />} />
             <Route
               path="/subjects/math/music"
-              element={<TopicMusicDetail />}
+              element={<TopicMathMusicDetail />}
+            ></Route>
+            <Route
+              path="/subjects/informatics/music"
+              element={<TopicInforMusicDetail />}
+            ></Route>
+            <Route
+              path="/subjects/science/music"
+              element={<TopicScienceMusicDetail />}
             ></Route>
           </Route>
         </Routes>

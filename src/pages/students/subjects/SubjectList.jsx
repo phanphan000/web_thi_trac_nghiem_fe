@@ -3,19 +3,16 @@ const subjects = [
   {
     id: "math",
     name: "MATH",
-    link: "/subjects/math",
     image: "/assets/students/Slide 9/9.1.png",
   },
   {
     id: "science",
     name: "SCIENCE",
-    link: "/subjects/science",
     image: "/assets/students/Slide 9/Slide 9.2.png",
   },
   {
-    id: "tin_hoc",
+    id: "informatics",
     name: "TIN HỌC",
-    link: "/subjects/tin_hoc",
     image: "/assets/students/Slide 9/Slide 9.3.png",
   },
 ];

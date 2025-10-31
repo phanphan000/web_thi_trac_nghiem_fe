@@ -18,7 +18,7 @@ const subjects = [
     img4: "/assets/students/Slide 18/196.png",
   },
   {
-    id: "tin_hoc",
+    id: "informatics",
     img1: "/assets/students/slide 19/45.png",
     img2: "/assets/students/slide 19/197.png",
     img3: "/assets/students/slide 19/198.png",
