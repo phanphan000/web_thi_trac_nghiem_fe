@@ -1,6 +1,18 @@
 import React from "react";
 
 export default function TopicScienceMusicDetail() {
+  const musicItems = [
+    { text: "Place value", link: "#1" },
+    { text: "Addition & Subtraction", link: "#2" },
+    { text: "Multiplication", link: "#3" },
+    { text: "Division", link: "#4" },
+    { text: "Fractions", link: "#5" },
+    { text: "Decimals", link: "#6" },
+    { text: "Measurement", link: "#7" },
+    { text: "Geometry", link: "#8" },
+    { text: "Time", link: "#9" },
+    { text: "Money", link: "#10" },
+  ];
   return (
     <div className="relative w-screen h-screen overflow-hidden">
       {/* Ảnh nền */}
@@ -22,80 +34,31 @@ export default function TopicScienceMusicDetail() {
         <div className="flex justify-between flex-1">
           <div className="w-1/3 pl-10 pt-10">
             <img
-              src="/assets/students/Slide 43/143.png"
+              src="/assets/students/Slide 43/199.png"
               alt="hehehhhe"
               className="scale-80"
             />
           </div>
           <div className="w-2/3 pl-10 flex">
-            <div className="w-1/3 flex flex-col space-y-8 mt-10">
-              <div className="flex items-center gap-2">
-                <img
-                  src="/assets/students/Slide 43/144.png"
-                  alt="ảnh slide 31"
-                  className="object-contain w-[30%]"
-                />
-                <p>Place value</p>
+            {[0, 1].map((col) => (
+              <div key={col} className="w-1/3 flex flex-col space-y-4 mt-5">
+                {musicItems.slice(col * 5, col * 5 + 5).map((item, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <img
+                      src="/assets/students/Slide 43/144.png"
+                      alt="ảnh slide 43"
+                      className="object-contain w-[30%]"
+                    />
+                    <a
+                      href={item.link}
+                      className="text-lg font-semibold italic hover:text-[color:var(--color-secondary)] transition duration-300 ease-in-out hover:scale-105"
+                    >
+                      {item.text}
+                    </a>
+                  </div>
+                ))}
               </div>
-              <div className="flex items-center gap-2">
-                <img
-                  src="/assets/students/Slide 43/144.png"
-                  alt="ảnh slide 31"
-                  className="object-contain w-[30%]"
-                />
-                <p>Place value</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <img
-                  src="/assets/students/Slide 43/144.png"
-                  alt="ảnh slide 31"
-                  className="object-contain w-[30%]"
-                />
-                <p>Place value</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <img
-                  src="/assets/students/Slide 43/144.png"
-                  alt="ảnh slide 31"
-                  className="object-contain w-[30%]"
-                />
-                <p>Place value</p>
-              </div>
-            </div>
-            <div className="w-1/3 flex flex-col space-y-8 mt-10">
-              <div className="flex items-center gap-2">
-                <img
-                  src="/assets/students/Slide 43/144.png"
-                  alt="ảnh slide 31"
-                  className="object-contain w-[30%]"
-                />
-                <p>Place value</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <img
-                  src="/assets/students/Slide 43/144.png"
-                  alt="ảnh slide 31"
-                  className="object-contain w-[30%]"
-                />
-                <p>Place value</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <img
-                  src="/assets/students/Slide 43/144.png"
-                  alt="ảnh slide 31"
-                  className="object-contain w-[30%]"
-                />
-                <p>Place value</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <img
-                  src="/assets/students/Slide 43/144.png"
-                  alt="ảnh slide 31"
-                  className="object-contain w-[30%]"
-                />
-                <p>Place value</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
