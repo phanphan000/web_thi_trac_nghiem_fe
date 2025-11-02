@@ -13,6 +13,8 @@ import Tool from "./pages/students/tool/ToolDetail";
 import Test from "./pages/students/test/index";
 import Instructions from "./pages/students/test/instructions";
 import Exam from "./pages/students/test/exam";
+// import các trang học sinh--->Results
+import MathResults from "./pages/students/results/MathResults";
 //import các trang học sinh-->subjects
 import SubjectList from "./pages/students/subjects/SubjectList";
 import LearningMethods from "./pages/students/subjects/LearningMethods";
@@ -71,8 +73,10 @@ function App() {
             <Route path="/test" element={<Test />} />
             <Route path="/test/instructions" element={<Instructions />} />
             <Route path="/test/exam" element={<Exam />} />
-            {/* Route của----------------------- tool/----------------------------- */}
+            {/* --------------------------Route của tool/----------------------------- */}
             <Route path="/tool" element={<Tool />} />
+            {/* --------------------Route của Results--------------------- */}
+            <Route path="/results/math" element={<MathResults />}></Route>
             {/*------------------- Route của subjects/ ----------------------------*/}
             <Route path="/subjects" element={<SubjectList />} />
             <Route path="/subjects/:subjectId" element={<LearningMethods />} />
