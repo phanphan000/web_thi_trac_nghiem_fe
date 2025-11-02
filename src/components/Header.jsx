@@ -23,10 +23,10 @@ const Header = ({ isLoggedIn, onLogout, onRegisterClick }) => {
           <img src="/assets/students/Slide 2/Slide 2.1.png" alt="logo" />
         </Link>
       </div>
-      <div className="px-10 mt-5 mx-6 items-center container">
+      <div className="px-10 mx-6 items-center container">
         {/* Nếu chưa đăng nhập */}
         {!isLoggedIn ? (
-          <nav className="flex gap-4 justify-end">
+          <nav className="flex gap-4 justify-end mt-5">
             <button
               onClick={() => navigate("/login")}
               className="flex items-center justify-center py-6 px-16 rounded-4xl font-bold text-2xl
