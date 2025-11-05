@@ -76,7 +76,7 @@ export default function TopicInforGameDetail() {
         </div>
 
         {/* Grid 2 hàng x 5 cột */}
-        <div className="grid grid-cols-5 gap-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-5 gap-8 max-w-7xl mx-auto mt-10">
           {listgames.map((game, index) => (
             <a
               key={index}

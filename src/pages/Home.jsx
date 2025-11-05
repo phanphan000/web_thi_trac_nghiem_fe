@@ -103,7 +103,7 @@ function Section3() {
             <h1 className="text-6xl primary-text-color">
               Khơi trí tuệ - Mở tương lai
             </h1>
-            <div className="mt-3 flex justify-center gap-20 text-xl font-semibold">
+            <div className="mt-3 flex justify-center gap-20 text-xl font-semibold mb-10">
               <p className="primary-text-color">Sáng Tạo</p>
               <p className="primary-text-color">Tự Học</p>
               <p className="primary-text-color">Làm Chủ Kiến Thức </p>
@@ -111,7 +111,7 @@ function Section3() {
           </div>
           <div className="flex">
             <div className="w-1/2">
-              <div className="flex  items-center justify-center">
+              <div className="flex items-center justify-center">
                 <img
                   src="/assets/students/Slide 4/Slide 4.1.png"
                   alt="Slide 4.1.png"
@@ -135,7 +135,7 @@ function Section3() {
                   alt="Slide 4.3.png"
                   className="w-35"
                 />
-                <span className="text-4xl primary-text-color">
+                <span className="text-4xl primary-text-color mr-30">
                   Học tập qua trò chơi
                 </span>
               </div>
@@ -148,7 +148,7 @@ function Section3() {
               </div>
             </div>
             <div className="w-1/2">
-              <div className="flex  items-center justify-center">
+              <div className="flex  items-center justify-center mr-20">
                 <img
                   src="/assets/students/Slide 4/Slide 4.2.png"
                   alt="Slide 4.2.png"
@@ -202,8 +202,8 @@ function Section4() {
               GV Ngôi Sao Hoàng Mai
             </h1>
           </div>
-          <div className="flex">
-            <div>
+          <div className="flex items-center justify-center flex-wrap">
+            <div className="mt-10">
               <img
                 src="/assets/students/Slide 5/Slide 5.1.png"
                 alt=""

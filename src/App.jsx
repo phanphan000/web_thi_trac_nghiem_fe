@@ -8,13 +8,16 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Header from "./components/Header";
 //import các trang học sinh-->tool
-import Tool from "./pages/students/tool/ToolDetail";
+import ToolList from "./pages/students/tool/ToolList";
+import ToolGame from "./pages/students/tool/tooldetail/ToolGame";
+import ToolQuiz from "./pages/students/tool/tooldetail/ToolQuiz";
+import ToolMusic from "./pages/students/tool/tooldetail/ToolMusic";
 //import các trang học sinh-->test
 import Test from "./pages/students/test/index";
 import Instructions from "./pages/students/test/instructions";
 import Exam from "./pages/students/test/exam";
 // import các trang học sinh--->Results
-import MathResults from "./pages/students/results/MathResults";
+import Results from "./pages/students/results/Results";
 //import các trang học sinh-->subjects
 import SubjectList from "./pages/students/subjects/SubjectList";
 import LearningMethods from "./pages/students/subjects/LearningMethods";
@@ -74,9 +77,12 @@ function App() {
             <Route path="/test/instructions" element={<Instructions />} />
             <Route path="/test/exam" element={<Exam />} />
             {/* --------------------------Route của tool/----------------------------- */}
-            <Route path="/tool" element={<Tool />} />
+            <Route path="/tool" element={<ToolList />} />
+            <Route path="/tool/game" element={<ToolGame />} />
+            <Route path="/tool/quiz" element={<ToolQuiz />} />
+            <Route path="/tool/music" element={<ToolMusic />} />
             {/* --------------------Route của Results--------------------- */}
-            <Route path="/results/math" element={<MathResults />}></Route>
+            <Route path="/results" element={<Results />}></Route>
             {/*------------------- Route của subjects/ ----------------------------*/}
             <Route path="/subjects" element={<SubjectList />} />
             <Route path="/subjects/:subjectId" element={<LearningMethods />} />

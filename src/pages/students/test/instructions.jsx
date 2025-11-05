@@ -12,14 +12,14 @@ export default function Instructions() {
   const navigate = useNavigate();
 
   return (
-    <div className="h-full mx-10 flex justify-between pt-30 primary-text-color items-center">
+    <div className="h-full mx-10 flex justify-between pt-35 primary-text-color items-center">
       <img
         src="/assets/students/Slide 2/Slide 2.3.png"
         alt="Login Background"
         className="absolute inset-0 w-full h-full object-contain object-bottom z-0"
       />
       <div
-        className="scale-[0.95] w-full max-w-4xl mx-auto z-10 relative bg-cover bg-center bg-no-repeat flex flex-col justify-center pt-20 pb-40 px-30"
+        className="scale-[0.95] w-full max-w-4xl mx-auto z-10 relative bg-cover bg-center bg-no-repeat flex flex-col justify-center pt-30 pb-40 px-30"
         style={{ backgroundImage: 'url("/assets/students/Slide 14/34.png")' }}
       >
         {/* Phần nội dung */}

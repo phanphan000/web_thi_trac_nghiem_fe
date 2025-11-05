@@ -57,10 +57,7 @@ const Header = ({ isLoggedIn, onLogout, onRegisterClick }) => {
             <Link to="/tool" className="hover:text-[var(--color-secondary)]">
               Công cụ
             </Link>
-            <Link
-              to="/results/math"
-              className="hover:text-[var(--color-secondary)]"
-            >
+            <Link to="/results" className="hover:text-[var(--color-secondary)]">
               Kết quả
             </Link>
             <div className="flex items-center justify-center">

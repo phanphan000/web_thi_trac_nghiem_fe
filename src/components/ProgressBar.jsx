@@ -51,13 +51,13 @@ const ProgressBar = ({ data }) => {
         return (
           <div key={index} className="flex gap-4 items-center mx-15">
             {/* Cột 1: Text chủ đề */}
-            <div className="flex-1 flex justify-center">
-              <p className="text-2xl primary-text-color">{item.name}</p>
+            <div className="flex-1 flex ml-20">
+              <p className="text-2xl primary-text-color ml-10">{item.name}</p>
             </div>
 
             {/* Cột 2: Thanh điểm số */}
             <div className="flex-1 mx-15">
-              <div className="h-6 rounded-full overflow-hidden relative">
+              <div className="h-9 rounded-full overflow-hidden relative">
                 <div
                   className={`absolute inset-0 ${getLightColor(item.score)}`}
                 ></div>

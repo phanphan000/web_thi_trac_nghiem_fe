@@ -37,7 +37,7 @@ export default function MathQuizList() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col items-center pt-22">
+    <div className="min-h-screen flex flex-col items-center pt-30">
       {/* Header */}
       <div className="w-full flex justify-center">
         <img
@@ -46,7 +46,7 @@ export default function MathQuizList() {
           className="object-contain scale-75"
         />
       </div>
-      <div className="flex flex-wrap justify-between max-w-7xl mx-auto gap-y-8">
+      <div className="flex flex-wrap justify-between max-w-7xl mx-auto gap-y-8 mt-10">
         {lists.map((list, index) => (
           <div
             key={index}

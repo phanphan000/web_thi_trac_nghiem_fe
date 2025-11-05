@@ -46,7 +46,7 @@ export default function MathQuizList() {
           className="object-contain h-35"
         />
       </div>
-      <div className="flex flex-wrap justify-between max-w-7xl mx-auto gap-y-8">
+      <div className="flex flex-wrap justify-between max-w-7xl mx-auto gap-y-8 mt-15">
         {lists.map((list, index) => (
           <div
             key={index}

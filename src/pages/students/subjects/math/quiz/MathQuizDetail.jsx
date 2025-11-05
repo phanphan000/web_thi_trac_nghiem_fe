@@ -132,7 +132,7 @@ export default function TopicList() {
         />
       </div>
 
-      <div className="flex w-full px-8">
+      <div className="flex w-full px-8 mt-15">
         {/* Bên trái: ảnh chiếm 3/7 */}
         <div className="w-3/7 flex flex-col items-center">
           <img src={topic.img} alt={topic.text} className="scale-80" />

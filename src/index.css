@@ -23,5 +23,5 @@ body::-webkit-scrollbar {
 }
 
 .secondary-text-color {
-    color: var(--color-primary);
+    color: var(--color-secondary);
 }

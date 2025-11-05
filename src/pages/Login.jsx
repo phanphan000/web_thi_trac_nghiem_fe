@@ -8,7 +8,6 @@ const Login = ({ onLogin }) => {
     username: "",
     className: "",
     password: "",
-    confirmPassword: "",
   });
 
   const [message, setMessage] = useState("");
@@ -33,13 +32,12 @@ const Login = ({ onLogin }) => {
         username: "",
         className: "",
         password: "",
-        confirmPassword: "",
       });
       setMessage("");
     }, 2000);
   };
   return (
-    <div className="h-full mx-10 flex justify-between pt-40">
+    <div className="h-full mx-10 flex justify-between pt-50 items-center">
       <img
         src="/assets/students/Slide 2/Slide 2.3.png"
         alt="Login Background"
@@ -49,7 +47,7 @@ const Login = ({ onLogin }) => {
         <div className="text-center mb-10">
           <h1 className="text-6xl primary-text-color">Đăng Nhập</h1>
         </div>
-        <form onSubmit={handleLogin} className="space-y-8">
+        <form onSubmit={handleLogin} className="space-y-8 mr-15">
           {/* Tên đăng nhập */}
           <div className="flex items-center gap-8">
             <label className="primary-text-color text-2xl w-48">
@@ -76,25 +74,11 @@ const Login = ({ onLogin }) => {
             />
           </div>
 
-          {/* Nhập lại mật khẩu */}
-          <div className="flex items-center gap-8">
-            <label className="primary-text-color text-2xl w-48">
-              Nhập lại mật khẩu
-            </label>
-            <input
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleInputChange}
-              className="px-20 py-4 text-center rounded-full border-2 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-lg w-[500px]"
-            />
-          </div>
-
           {/* Nút đăng nhập */}
           <div className="flex justify-center mt-8">
             <button
               onClick={handleLogin}
-              className="bg-[#ef7131] text-white font-semibold text-xl px-20 py-5 ml-10 rounded-full cursor-pointer hover:from-purple-600 hover:to-pink-600 transition-all transform hover:scale-105 shadow-lg mb-10"
+              className="bg-[#ef7131] text-white font-semibold text-xl px-20 py-5 rounded-full cursor-pointer hover:from-purple-600 hover:to-pink-600 transition-all transform hover:scale-105 shadow-lg mb-10"
             >
               Đăng nhập
             </button>
