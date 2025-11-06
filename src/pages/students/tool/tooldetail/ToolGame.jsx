@@ -214,13 +214,13 @@ const GamePage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center">
+    <div className="min-h-screen flex flex-col justify-center pt-10">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">
           🎮 Game Học Tập
         </h1>
 
-        <div className="space-y-6">
+        <div className="space-y-5">
           {gameData.map((subject, index) => (
             <div key={index} className="rounded-2xl shadow-lg overflow-hidden">
               <div className="flex flex-col md:flex-row max-h-[180px] overflow-hidden">
