@@ -112,7 +112,7 @@ export default function QuizApp({
         />
         <img
           src="/assets/students/Slide 15/38.png"
-          className="absolute bottom-0 right-0 w-3/8 object-contain object-bottom z-3z "
+          className="absolute bottom-0 right-0 w-3/8 object-contain object-bottom z-20 "
         />
         <div className="bg-white rounded-2xl shadow-xl p-8 max-w-xl w-full text-center z-10">
           <h1 className="text-3xl font-extrabold">Kết quả</h1>
@@ -154,7 +154,7 @@ export default function QuizApp({
       />
       <img
         src="/assets/students/Slide 15/38.png"
-        className="absolute bottom-0 right-0 w-3/8 object-contain object-bottom z-3z "
+        className="absolute bottom-0 right-0 w-3/8 object-contain object-bottom z-30 "
       />
       <div className="w-full max-w-3xl z-10">
         <header className="flex items-center justify-between mb-4">
@@ -271,7 +271,7 @@ export default function QuizApp({
             </div>
 
             {/* Sidebar: small summary */}
-            <aside className="w-40 hidden md:flex flex-col h-full ">
+            <aside className="w-40 hidden md:flex flex-col h-full">
               <div className="bg-gradient-to-b from-white to-indigo-50 p-4 rounded-xl shadow-inner text-center">
                 <div className="text-sm">Tiến trình</div>
                 <div className="mt-2 grid grid-cols-5 gap-2">
@@ -292,7 +292,7 @@ export default function QuizApp({
                 </div>
               </div>
 
-              <div className="p-4">
+              <div className="p-4 z-1000">
                 <button
                   onClick={() => finishQuiz()}
                   className="w-full px-4 py-2 rounded-xl bg-red-100 border shadow-lg hover:bg-red-200 transition"
