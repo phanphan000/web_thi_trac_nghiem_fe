@@ -1,7 +1,6 @@
 // ArrowCursorProvider.jsx
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-
 const ArrowCursorProvider = ({ children }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isClicking, setIsClicking] = useState(false);
@@ -29,9 +28,19 @@ const ArrowCursorProvider = ({ children }) => {
     const style = document.createElement("style");
     style.id = "arrow-cursor-style";
     const svgCursor = encodeURIComponent(`
-      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32">
-        <path fill="#1E90FF" stroke="white" stroke-width="1.5" d="M2 2 L2 26 L10 21 L14 30 L18 28 L14 18 L22 13 Z"/>
-      </svg>
+     <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+            <!-- Arrow body -->
+            <path d="M2 2 L2 22 L8 16 L12 24 L16 22 L12 14 L20 14 Z" fill="#4A90E2" stroke="#2C3E50" stroke-width="1"/>
+            <!-- Arrow highlight -->
+            <path d="M2 2 L2 18 L6 14 Z" fill="#6BB6FF" opacity="0.6"/>
+            <!-- Star sparkle -->
+            <circle cx="28" cy="4" r="2" fill="#FFD700">
+                <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="26" cy="8" r="1.5" fill="#FF6B9D">
+                <animate attributeName="opacity" values="0.3;1;0.3" dur="1.8s" repeatCount="indefinite"/>
+            </circle>
+        </svg>
     `);
 
     style.innerHTML = `
@@ -56,7 +65,7 @@ const ArrowCursorProvider = ({ children }) => {
   return (
     <>
       <motion.div
-        className="fixed pointer-events-none z-[9999]"
+        className="fixed pointer-events-none z-9999"
         style={{
           left: mousePosition.x,
           top: mousePosition.y,
@@ -69,7 +78,7 @@ const ArrowCursorProvider = ({ children }) => {
 
       {isClicking && (
         <motion.div
-          className="fixed pointer-events-none z-[9998] rounded-full border-2"
+          className="fixed pointer-events-none z-9998 rounded-full border-2"
           style={{
             left: mousePosition.x,
             top: mousePosition.y,

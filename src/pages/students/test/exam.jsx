@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function QuizApp({
   questions = SAMPLE_QUESTIONS,
-  timePerQuiz = 300,
+  timePerQuiz = 600,
 }) {
   const navigate = useNavigate();
   const [index, setIndex] = useState(0);
@@ -112,7 +112,7 @@ export default function QuizApp({
         />
         <img
           src="/assets/students/Slide 15/38.png"
-          className="absolute bottom-0 right-0 w-3/8 object-contain object-bottom z-11 "
+          className="absolute bottom-0 right-0 w-3/8 object-contain object-bottom z-3z "
         />
         <div className="bg-white rounded-2xl shadow-xl p-8 max-w-xl w-full text-center z-10">
           <h1 className="text-3xl font-extrabold">Kết quả</h1>
@@ -154,7 +154,7 @@ export default function QuizApp({
       />
       <img
         src="/assets/students/Slide 15/38.png"
-        className="absolute bottom-0 right-0 w-3/8 object-contain object-bottom z-11 "
+        className="absolute bottom-0 right-0 w-3/8 object-contain object-bottom z-3z "
       />
       <div className="w-full max-w-3xl z-10">
         <header className="flex items-center justify-between mb-4">
@@ -264,20 +264,14 @@ export default function QuizApp({
                     }}
                     className="px-4 py-2 rounded-xl bg-yellow-100 border shadow-lg hover:bg-yellow-200 transition"
                   >
-                    Bỏ qua
-                  </button>
-                  <button
-                    onClick={() => finishQuiz()}
-                    className="px-4 py-2 rounded-xl bg-red-100 border shadow-lg hover:bg-red-200 transition"
-                  >
-                    Nộp bài
+                    Tiếp tục
                   </button>
                 </div>
               </div>
             </div>
 
             {/* Sidebar: small summary */}
-            <aside className="w-40 hidden md:block">
+            <aside className="w-40 hidden md:flex flex-col h-full ">
               <div className="bg-gradient-to-b from-white to-indigo-50 p-4 rounded-xl shadow-inner text-center">
                 <div className="text-sm">Tiến trình</div>
                 <div className="mt-2 grid grid-cols-5 gap-2">
@@ -296,6 +290,15 @@ export default function QuizApp({
                     </button>
                   ))}
                 </div>
+              </div>
+
+              <div className="p-4">
+                <button
+                  onClick={() => finishQuiz()}
+                  className="w-full px-4 py-2 rounded-xl bg-red-100 border shadow-lg hover:bg-red-200 transition"
+                >
+                  Nộp bài
+                </button>
               </div>
             </aside>
           </div>
@@ -379,7 +382,7 @@ const SAMPLE_QUESTIONS = [
     image: null,
   },
   {
-    title: "Ai là người phát minh ra bóng đèn điện?",
+    title: "Ai phát minh ra bóng đèn điện?",
     options: ["Newton", "Einstein", "Edison", "Tesla"],
     correct: 2,
     explanation: "Thomas Edison là người phát minh ra bóng đèn điện.",
@@ -403,11 +406,11 @@ const SAMPLE_QUESTIONS = [
     title: "Nước sôi ở nhiệt độ bao nhiêu độ C?",
     options: ["50", "75", "90", "100"],
     correct: 3,
-    explanation: "Nước sôi ở 100 độ C (ở áp suất thường).",
+    explanation: "Nước sôi ở 100°C (áp suất thường).",
     image: null,
   },
   {
-    title: "Trong các hành tinh sau, hành tinh nào gần Mặt trời nhất?",
+    title: "Hành tinh nào gần Mặt trời nhất?",
     options: ["Trái đất", "Sao Kim", "Sao Thủy", "Sao Hỏa"],
     correct: 2,
     explanation: "Sao Thủy là hành tinh gần Mặt trời nhất.",
@@ -425,6 +428,146 @@ const SAMPLE_QUESTIONS = [
     options: ["Xanh và trắng", "Đỏ và vàng", "Đen và đỏ", "Trắng và xanh"],
     correct: 1,
     explanation: "Quốc kỳ Việt Nam có nền đỏ và ngôi sao vàng ở giữa.",
+    image: null,
+  },
+  {
+    title: "Một năm có bao nhiêu tháng?",
+    options: ["10", "11", "12", "13"],
+    correct: 2,
+    explanation: "Một năm có 12 tháng.",
+    image: null,
+  },
+  {
+    title: "Chữ cái đầu tiên trong bảng chữ cái tiếng Việt là gì?",
+    options: ["B", "A", "C", "D"],
+    correct: 1,
+    explanation: "Chữ cái đầu tiên là A.",
+    image: null,
+  },
+  {
+    title: "Trong toán học, π (pi) xấp xỉ bằng bao nhiêu?",
+    options: ["2.14", "3.14", "4.13", "3.41"],
+    correct: 1,
+    explanation: "Số π (pi) xấp xỉ 3.14.",
+    image: null,
+  },
+  {
+    title: "Con người dùng cơ quan nào để nghe?",
+    options: ["Mũi", "Mắt", "Tai", "Miệng"],
+    correct: 2,
+    explanation: "Tai là cơ quan dùng để nghe.",
+    image: null,
+  },
+  {
+    title: "Ngày Quốc khánh Việt Nam là ngày nào?",
+    options: ["1/5", "2/9", "30/4", "20/11"],
+    correct: 1,
+    explanation: "Ngày Quốc khánh Việt Nam là 2/9.",
+    image: null,
+  },
+  {
+    title: "Tháng Hai có bao nhiêu ngày (năm thường)?",
+    options: ["28", "29", "30", "31"],
+    correct: 0,
+    explanation: "Tháng Hai có 28 ngày trong năm thường.",
+    image: null,
+  },
+  {
+    title: "Mặt trăng là vệ tinh của hành tinh nào?",
+    options: ["Sao Kim", "Trái đất", "Sao Hỏa", "Sao Thủy"],
+    correct: 1,
+    explanation: "Mặt trăng là vệ tinh tự nhiên của Trái đất.",
+    image: null,
+  },
+  {
+    title: "Phương tiện nào di chuyển trên không?",
+    options: ["Ô tô", "Máy bay", "Tàu hỏa", "Xe đạp"],
+    correct: 1,
+    explanation: "Máy bay di chuyển trên không.",
+    image: null,
+  },
+  {
+    title: "Hình nào có 3 cạnh?",
+    options: ["Hình tròn", "Hình vuông", "Hình tam giác", "Hình chữ nhật"],
+    correct: 2,
+    explanation: "Hình tam giác có 3 cạnh.",
+    image: null,
+  },
+  {
+    title: "Cầu thủ dùng gì để đá bóng?",
+    options: ["Tay", "Đầu", "Chân", "Gối"],
+    correct: 2,
+    explanation: "Cầu thủ chủ yếu dùng chân để đá bóng.",
+    image: null,
+  },
+  {
+    title: "Tác giả của truyện 'Dế Mèn phiêu lưu ký' là ai?",
+    options: ["Nam Cao", "Ngô Tất Tố", "Tô Hoài", "Nguyễn Du"],
+    correct: 2,
+    explanation: "Tác giả là nhà văn Tô Hoài.",
+    image: null,
+  },
+  {
+    title: "Ngọn núi cao nhất thế giới là gì?",
+    options: ["Phan Xi Păng", "Everest", "Alpes", "Kilimanjaro"],
+    correct: 1,
+    explanation: "Everest là ngọn núi cao nhất thế giới.",
+    image: null,
+  },
+  {
+    title: "Trái tim nằm ở bên nào của cơ thể người?",
+    options: ["Bên phải", "Bên trái", "Giữa", "Sau lưng"],
+    correct: 1,
+    explanation: "Trái tim nằm lệch về bên trái.",
+    image: null,
+  },
+  {
+    title: "Loài chim nào có thể bắt chước tiếng người?",
+    options: ["Chim sẻ", "Chim công", "Chim vẹt", "Chim én"],
+    correct: 2,
+    explanation: "Chim vẹt có thể bắt chước tiếng người.",
+    image: null,
+  },
+  {
+    title: "Mùa nào thường có thời tiết nóng nhất?",
+    options: ["Xuân", "Hạ", "Thu", "Đông"],
+    correct: 1,
+    explanation: "Mùa hạ (mùa hè) là mùa nóng nhất.",
+    image: null,
+  },
+  {
+    title: "Cơ quan nào giúp con người hô hấp?",
+    options: ["Tim", "Phổi", "Gan", "Thận"],
+    correct: 1,
+    explanation: "Phổi giúp con người hô hấp (hít thở).",
+    image: null,
+  },
+  {
+    title: "Số nhỏ nhất trong các số sau: 5, 2, 8, 10?",
+    options: ["5", "2", "8", "10"],
+    correct: 1,
+    explanation: "Số nhỏ nhất là 2.",
+    image: null,
+  },
+  {
+    title: "Tác phẩm 'Truyện Kiều' do ai sáng tác?",
+    options: ["Nguyễn Du", "Ngô Tất Tố", "Xuân Diệu", "Nam Cao"],
+    correct: 0,
+    explanation: "Tác phẩm 'Truyện Kiều' do Nguyễn Du sáng tác.",
+    image: null,
+  },
+  {
+    title: "Biển nào lớn nhất thế giới?",
+    options: ["Biển Đông", "Thái Bình Dương", "Đại Tây Dương", "Ấn Độ Dương"],
+    correct: 1,
+    explanation: "Thái Bình Dương là đại dương lớn nhất thế giới.",
+    image: null,
+  },
+  {
+    title: "Loài động vật nào sau đây biết bay?",
+    options: ["Cá", "Rắn", "Chim", "Hổ"],
+    correct: 2,
+    explanation: "Chim là loài động vật biết bay.",
     image: null,
   },
 ];
