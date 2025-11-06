@@ -72,7 +72,7 @@ const ProgressBar = ({ data }) => {
 
             {/* Cột 3: Điểm số và trạng thái */}
             <div className="flex-1 flex flex-col items-center mx-15">
-              <span className="text-lg font-bold text-gray-800">
+              <span className="text-lg font-bold primary-text-color">
                 {Math.round(score)}%
               </span>
               {isHighScore ? (

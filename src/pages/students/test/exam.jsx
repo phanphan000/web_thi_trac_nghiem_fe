@@ -10,6 +10,7 @@ export default function QuizApp({
   const [selected, setSelected] = useState(null);
   const [answers, setAnswers] = useState(Array(questions.length).fill(null));
   const [showAnswer, setShowAnswer] = useState(false);
+  const [showIncompleteWarning, setShowIncompleteWarning] = useState(false);
   const [score, setScore] = useState(null);
   const [timeLeft, setTimeLeft] = useState(timePerQuiz); // in seconds
   const timerRef = useRef(null);
@@ -40,13 +41,23 @@ export default function QuizApp({
     setTimeout(() => {
       setShowAnswer(false);
       setSelected(null);
-      if (index < questions.length - 1) setIndex(index + 1);
-      else finishQuiz(newAnswers);
+      if (index < questions.length - 1) {
+        setIndex(index + 1);
+      } else {
+        // Không tự nộp nữa, chỉ dừng lại
+        setSelected(null);
+      }
     }, 900);
   }
 
   function finishQuiz(finalAnswers = answers) {
-    // calculate score
+    const unanswered = finalAnswers.filter((a) => a === null).length;
+
+    if (unanswered > 0) {
+      setShowIncompleteWarning(true);
+      return;
+    }
+
     const s = finalAnswers.reduce((acc, a, i) => {
       return acc + (a === questions[i].correct ? 1 : 0);
     }, 0);
@@ -200,7 +211,7 @@ export default function QuizApp({
                         onClick={() => handleSelect(i)}
                         disabled={showAnswer}
                         className={`w-full text-left p-4 rounded-xl shadow-sm border transition transform focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-300 hover:scale-103 ${
-                          isSelected ? "scale-[1.01]" : ""
+                          isSelected ? "bg-gray-300 scale-[1.01]" : "bg-white"
                         }`}
                         aria-pressed={isSelected}
                       >
@@ -234,9 +245,6 @@ export default function QuizApp({
                   <div className="px-2 py-1 rounded bg-white shadow-sm">
                     Mẹo: Dùng phím 1-4
                   </div>
-                  <div className="px-2 py-1 rounded bg-white shadow-sm">
-                    Kéo thả không cần thiết
-                  </div>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -258,39 +266,77 @@ export default function QuizApp({
                   >
                     Bỏ qua
                   </button>
+                  <button
+                    onClick={() => finishQuiz()}
+                    className="px-4 py-2 rounded-xl bg-red-100 border shadow-lg hover:bg-red-200 transition"
+                  >
+                    Nộp bài
+                  </button>
                 </div>
               </div>
             </div>
 
             {/* Sidebar: small summary */}
             <aside className="w-40 hidden md:block">
-              <div className="bg-gradient-to-b from-white to-indigo-50 p-3 rounded-xl shadow-inner text-center">
+              <div className="bg-gradient-to-b from-white to-indigo-50 p-4 rounded-xl shadow-inner text-center">
                 <div className="text-sm">Tiến trình</div>
                 <div className="mt-2 grid grid-cols-5 gap-2">
                   {questions.map((_, i) => (
-                    <div
+                    <button
                       key={i}
-                      className={`h-6 rounded ${
-                        answers[i] === null
-                          ? "bg-gray-200"
-                          : answers[i] === questions[i].correct
-                          ? "bg-green-300"
-                          : "bg-red-300"
+                      onClick={() => setIndex(i)}
+                      className={`h-7 w-7 rounded-full text-sm font-semibold flex items-center justify-center transition ${
+                        answers[i] !== null
+                          ? "bg-gray-400 text-white"
+                          : "bg-gray-200 text-black"
                       }`}
                       title={`Câu ${i + 1}`}
-                    />
+                    >
+                      {i + 1}
+                    </button>
                   ))}
-                </div>
-                <div className="mt-3 text-xs text-gray-600">
-                  Câu đúng:{" "}
-                  {answers.reduce(
-                    (acc, a, i) => acc + (a === questions[i].correct ? 1 : 0),
-                    0
-                  )}
                 </div>
               </div>
             </aside>
           </div>
+
+          {/* Div cảnh báo */}
+          {showIncompleteWarning && (
+            <div className="fixed inset-0 bg-opacity-40 flex items-center justify-center z-50">
+              <div className="bg-white p-6 rounded-xl shadow-xl max-w-sm w-full text-center">
+                <h2 className="text-lg font-semibold text-yellow-700">
+                  ⚠️ Còn câu chưa làm
+                </h2>
+                <p className="mt-2 text-sm text-gray-700">
+                  Bạn vẫn còn một số câu hỏi chưa trả lời. Bạn có chắc chắn muốn
+                  nộp bài không?
+                </p>
+                <div className="mt-4 flex justify-center gap-3">
+                  <button
+                    onClick={() => {
+                      const s = answers.reduce(
+                        (acc, a, i) =>
+                          acc + (a === questions[i].correct ? 1 : 0),
+                        0
+                      );
+                      setScore(s);
+                      clearInterval(timerRef.current);
+                      setShowIncompleteWarning(false);
+                    }}
+                    className="px-4 py-2 rounded bg-yellow-400 hover:bg-yellow-500 text-white font-semibold"
+                  >
+                    Vẫn nộp bài
+                  </button>
+                  <button
+                    onClick={() => setShowIncompleteWarning(false)}
+                    className="px-4 py-2 rounded border font-medium"
+                  >
+                    Quay lại
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -312,24 +358,73 @@ function formatTime(sec) {
 
 const SAMPLE_QUESTIONS = [
   {
-    title: "Con chó kêu như thế nào?",
-    options: ["Meo meo", "Gâu gâu", "Equ equ", "Chíp chíp"],
+    title: "Con mèo kêu như thế nào?",
+    options: ["Gâu gâu", "Meo meo", "Ò ó o", "Ụt ịt"],
     correct: 1,
-    explanation: "Con chó thường kêu gâu gâu.",
+    explanation: "Con mèo thường kêu meo meo.",
     image: null,
   },
   {
-    title: "2 + 3 = ?",
-    options: ["4", "5", "6", "7"],
-    correct: 1,
-    explanation: "2 + 3 = 5",
-    image: null,
-  },
-  {
-    title: "Mặt trời mọc ở hướng nào?",
-    options: ["Tây", "Nam", "Đông", "Bắc"],
+    title: "Trái đất quay quanh gì?",
+    options: ["Mặt trăng", "Sao Hỏa", "Mặt trời", "Sao Kim"],
     correct: 2,
-    explanation: "Mặt trời mọc ở hướng Đông.",
+    explanation: "Trái đất quay quanh Mặt trời.",
+    image: null,
+  },
+  {
+    title: "1 mét bằng bao nhiêu centimet?",
+    options: ["10", "100", "1000", "10000"],
+    correct: 1,
+    explanation: "1 mét bằng 100 centimet.",
+    image: null,
+  },
+  {
+    title: "Ai là người phát minh ra bóng đèn điện?",
+    options: ["Newton", "Einstein", "Edison", "Tesla"],
+    correct: 2,
+    explanation: "Thomas Edison là người phát minh ra bóng đèn điện.",
+    image: null,
+  },
+  {
+    title: "Việt Nam nằm ở châu lục nào?",
+    options: ["Châu Phi", "Châu Âu", "Châu Á", "Châu Mỹ"],
+    correct: 2,
+    explanation: "Việt Nam nằm ở châu Á.",
+    image: null,
+  },
+  {
+    title: "Thủ đô của Việt Nam là gì?",
+    options: ["Hà Nội", "Huế", "Đà Nẵng", "TP.HCM"],
+    correct: 0,
+    explanation: "Thủ đô của Việt Nam là Hà Nội.",
+    image: null,
+  },
+  {
+    title: "Nước sôi ở nhiệt độ bao nhiêu độ C?",
+    options: ["50", "75", "90", "100"],
+    correct: 3,
+    explanation: "Nước sôi ở 100 độ C (ở áp suất thường).",
+    image: null,
+  },
+  {
+    title: "Trong các hành tinh sau, hành tinh nào gần Mặt trời nhất?",
+    options: ["Trái đất", "Sao Kim", "Sao Thủy", "Sao Hỏa"],
+    correct: 2,
+    explanation: "Sao Thủy là hành tinh gần Mặt trời nhất.",
+    image: null,
+  },
+  {
+    title: "Từ nào sau đây là danh từ?",
+    options: ["Chạy", "Đẹp", "Ngôi nhà", "Nhanh"],
+    correct: 2,
+    explanation: "“Ngôi nhà” là danh từ (chỉ sự vật).",
+    image: null,
+  },
+  {
+    title: "Quốc kỳ Việt Nam có màu gì?",
+    options: ["Xanh và trắng", "Đỏ và vàng", "Đen và đỏ", "Trắng và xanh"],
+    correct: 1,
+    explanation: "Quốc kỳ Việt Nam có nền đỏ và ngôi sao vàng ở giữa.",
     image: null,
   },
 ];

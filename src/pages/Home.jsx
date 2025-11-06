@@ -4,6 +4,9 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
 function Section1({ goToSection }) {
+  const handleRegisterClick = () => {
+    goToSection(4); // chuyển đến Section5
+  };
   return (
     <div className="h-full mx-10 flex items-center justify-between">
       <img
@@ -28,7 +31,7 @@ function Section1({ goToSection }) {
 
       <div className="w-2/5">
         <button
-          onClick={() => goToSection(4)}
+          onClick={handleRegisterClick}
           className="flex items-center justify-center py-6 px-4 mb-40 rounded-4xl font-bold text-4xl
            bg-[#ef7131] text-white shadow-xl w-fit"
         >
@@ -487,7 +490,14 @@ export default function SmoothFullpageScroll({ goToSection }) {
   const sections = [
     {
       id: 0,
-      component: <Section1 goToSection={(id) => setCurrentSection(id)} />,
+      component: (
+        <Section1
+          goToSection={(id) => {
+            setCurrentSection(id);
+            setIsScrolling(true);
+          }}
+        />
+      ),
     },
     {
       id: 1,

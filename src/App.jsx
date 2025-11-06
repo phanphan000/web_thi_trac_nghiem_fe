@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
-import StarCursorProvider from "./components/StartCursorProvider";
+import ArrowCursorProvider from "./components/ArrowCursorProvider";
 //import các layout
 import MainLayout from "./layouts/MainLayout";
 //import các trang
@@ -18,6 +18,8 @@ import Instructions from "./pages/students/test/instructions";
 import Exam from "./pages/students/test/exam";
 // import các trang học sinh--->Results
 import Results from "./pages/students/results/Results";
+import Lazy from "./pages/students/results/Lazy";
+
 //import các trang học sinh-->subjects
 import SubjectList from "./pages/students/subjects/SubjectList";
 import LearningMethods from "./pages/students/subjects/LearningMethods";
@@ -51,7 +53,7 @@ function App() {
 
   return (
     <Router>
-      <StarCursorProvider>
+      <ArrowCursorProvider>
         <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} />
         <Routes>
           <Route
@@ -83,6 +85,7 @@ function App() {
             <Route path="/tool/music" element={<ToolMusic />} />
             {/* --------------------Route của Results--------------------- */}
             <Route path="/results" element={<Results />}></Route>
+            <Route path="/results/lazy" element={<Lazy />}></Route>
             {/*------------------- Route của subjects/ ----------------------------*/}
             <Route path="/subjects" element={<SubjectList />} />
             <Route path="/subjects/:subjectId" element={<LearningMethods />} />
@@ -139,7 +142,7 @@ function App() {
             ></Route>
           </Route>
         </Routes>
-      </StarCursorProvider>
+      </ArrowCursorProvider>
     </Router>
   );
 }

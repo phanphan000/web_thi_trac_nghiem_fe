@@ -1,4 +1,5 @@
 import OrangeButton from "@/components/OrangeButton";
+import { useNavigate } from "react-router-dom";
 const subjects = [
   {
     id: "math",
@@ -18,6 +19,7 @@ const subjects = [
 ];
 
 export default function SubjectList() {
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col items-center p-8 justify-center min-h-screen pt-30">
       <h1 className="text-6xl mb-4">HÔM NAY BẠN MUỐN HỌC GÌ?</h1>
@@ -25,6 +27,10 @@ export default function SubjectList() {
         {subjects.map((subject) => (
           <div
             key={subject.id}
+            onClick={() => {
+              // Điều hướng đến trang chi tiết môn học
+              navigate(`/subjects/${subject.id}`);
+            }}
             className="flex flex-col items-center gap-10 m-5"
           >
             <img
