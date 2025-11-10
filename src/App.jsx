@@ -1,12 +1,15 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState } from "react";
+//import các components
+import Header from "./components/Header";
 import ArrowCursorProvider from "./components/ArrowCursorProvider";
+import NotFound from "./pages/NotFound";
+import PrivateRoute from "./components/PrivateRoute";
 //import các layout
 import MainLayout from "./layouts/MainLayout";
 //import các trang
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Header from "./components/Header";
 //import các trang học sinh-->tool
 import ToolList from "./pages/students/tool/ToolList";
 import ToolGame from "./pages/students/tool/tooldetail/ToolGame";
@@ -18,8 +21,6 @@ import Instructions from "./pages/students/test/instructions";
 import Exam from "./pages/students/test/exam";
 // import các trang học sinh--->Results
 import Results from "./pages/students/results/Results";
-import Lazy from "./pages/students/results/Lazy";
-
 //import các trang học sinh-->subjects
 import SubjectList from "./pages/students/subjects/SubjectList";
 import LearningMethods from "./pages/students/subjects/LearningMethods";
@@ -75,7 +76,14 @@ function App() {
               element={<Login onLogin={handleLogin} />}
             />{" "}
             {/* -------------------Route của test/ ----------------------------*/}
-            <Route path="/test" element={<Test />} />
+            <Route
+              path="/test"
+              element={
+                <PrivateRoute isLoggedIn={isLoggedIn}>
+                  <Test />
+                </PrivateRoute>
+              }
+            />
             <Route path="/test/instructions" element={<Instructions />} />
             <Route path="/test/exam" element={<Exam />} />
             {/* --------------------------Route của tool/----------------------------- */}
@@ -85,7 +93,6 @@ function App() {
             <Route path="/tool/music" element={<ToolMusic />} />
             {/* --------------------Route của Results--------------------- */}
             <Route path="/results" element={<Results />}></Route>
-            <Route path="/results/lazy" element={<Lazy />}></Route>
             {/*------------------- Route của subjects/ ----------------------------*/}
             <Route path="/subjects" element={<SubjectList />} />
             <Route path="/subjects/:subjectId" element={<LearningMethods />} />
@@ -140,6 +147,9 @@ function App() {
               path="/subjects/science/quiz/:id"
               element={<ScienceQuizDetail />}
             ></Route>
+            {/* Trang 404 */}
+            <Route path="/404" element={<NotFound />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </ArrowCursorProvider>

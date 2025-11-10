@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Calendar from "react-calendar";
+import { useNavigate } from "react-router-dom";
+// import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { register } from "../services/auth";
 
 function Section1({ goToSection }) {
   const handleRegisterClick = () => {
@@ -14,26 +16,26 @@ function Section1({ goToSection }) {
         alt="Login Background"
         className="absolute inset-0 w-full h-full object-contain object-bottom z-0"
       />
-      <div className="w-3/5 z-10">
-        <h1 className="text-7xl mb-6 primary-text-color text-center">
+      <div className="w-full md:w-3/5 z-10 text-center md:text-left">
+        <h1 className="text-2xl md:text-7xl mb-4 md:mb-6 primary-text-color text-center">
           WELCOME TO
         </h1>
-        <h1 className="text-7xl mb-6 primary-text-color text-center">
+        <h1 className="text-2xl md:text-7xl mb-4 md:mb-6 primary-text-color text-center">
           BRAINY LAND
         </h1>
-        <p className="text-4xl primary-text-color mb-3 text-center">
+        <p className="text-lg md:text-4xl primary-text-color mb-2 md:mb-3 text-center">
           Một sân chơi toàn diện cho Math,Science,Tin học
         </p>
-        <p className="text-4xl primary-text-color text-center">
+        <p className="text-lg md:text-4xl primary-text-color mb-2 md:mb-3 text-center">
           Dành riêng cho Học sinh Ngôi Sao Hoàng Mai.
         </p>
       </div>
 
-      <div className="w-2/5">
+      <div className="w-full md:w-2/5 flex justify-center md:justify-between z-10 mt-6 md:mb-40">
         <button
           onClick={handleRegisterClick}
-          className="flex items-center justify-center py-6 px-4 mb-40 rounded-4xl font-bold text-4xl
-           bg-[#ef7131] text-white shadow-xl w-fit"
+          className="py-3 px-6 md:py-6 md:px-8 rounded-4xl font-bold text-lg md:text-4xl
+          bg-[#ef7131] text-white shadow-xl"
         >
           JOIN NOW FOR FREE
         </button>
@@ -50,13 +52,15 @@ function Section2() {
           alt="Slide 3.1.png"
           className="object-cover w-full"
         />
-        <div className="absolute bottom-30 left-0 w-24 h-24 w-70">
+        <div className="absolute md:bottom-0">
           <img
             src="/assets/students/Slide 3/Slide 3.2.png"
             alt="Slide 3.2.png"
+            className="w-30 h-30 md:w-60 md:h-60 object-contain"
           />
         </div>
       </div>
+
       <div className="w-1/2">
         <div className=" w-full">
           <div
@@ -69,7 +73,7 @@ function Section2() {
               backgroundSize: "100% 250%",
             }}
           >
-            <p className="text-3xl font-semibold primary-text-color leading-snug m-10">
+            <p className="text-base md:text-3xl font-semibold primary-text-color leading-snug m-4 md:m-10">
               Dành cho HS Tiểu học
               <br /> từ khối 3 - khối 5
             </p>
@@ -86,7 +90,7 @@ function Section2() {
               backgroundSize: "100% 100%",
             }}
           >
-            <p className="text-3xl font-semibold primary-text-color leading-snug m-10">
+            <p className="text-lg md:text-3xl font-semibold primary-text-color leading-snug m-10">
               Nội dung bám sát chương trình <br />
               Math, Science và Tin học <br />
               trường Ngôi Sao Hoàng Mai
@@ -99,218 +103,239 @@ function Section2() {
 }
 function Section3() {
   return (
-    <>
-      <div className="h-full mx-10 flex justify-between relative pt-35">
-        <div className="text-center w-full">
-          <div className="mb-1">
-            <h1 className="text-6xl primary-text-color">
-              Khơi trí tuệ - Mở tương lai
-            </h1>
-            <div className="mt-3 flex justify-center gap-20 text-xl font-semibold mb-10">
-              <p className="primary-text-color">Sáng Tạo</p>
-              <p className="primary-text-color">Tự Học</p>
-              <p className="primary-text-color">Làm Chủ Kiến Thức </p>
+    <div className="h-full mx-4 md:mx-10 flex flex-col md:flex-row justify-between relative pt-25">
+      <div className="text-center w-full md:scale-90">
+        {/* Tiêu đề */}
+        <div className="mb-1">
+          <h1 className="text-2xl md:text-6xl primary-text-color">
+            Khơi trí tuệ - Mở tương lai
+          </h1>
+          <div className="mt-3 flex  md:flex-row justify-center gap-4 md:gap-20 text-base md:text-xl font-semibold mb-6 md:mb-10">
+            <p className="primary-text-color">Sáng Tạo</p>
+            <p className="primary-text-color">Tự Học</p>
+            <p className="primary-text-color">Làm Chủ Kiến Thức</p>
+          </div>
+        </div>
+
+        {/* Nội dung 2 cột */}
+        <div className="flex md:flex-row">
+          {/* Cột trái */}
+          <div className="w-full  md:w-1/2 space-y-6 md:space-y-10 mt-6 md:mt-0">
+            <div className="flex md:flex-row items-center justify-center gap-2 md:gap-4">
+              <img
+                src="/assets/students/Slide 4/Slide 4.1.png"
+                alt="Slide 4.1.png"
+                className="w-16 md:w-35"
+              />
+              <span className="text-lg md:text-4xl primary-text-color">
+                Cá nhân hóa lộ trình học tập
+              </span>
+            </div>
+            <div className="mx-auto">
+              <img
+                src="/assets/students/Slide 4/Slide 4.5.png"
+                alt=""
+                className="w-1/2 md:w-2/7 mx-auto"
+              />
+            </div>
+
+            <div className="flex md:flex-row items-center justify-center gap-2 md:gap-4">
+              <img
+                src="/assets/students/Slide 4/Slide 4.3.png"
+                alt="Slide 4.3.png"
+                className="w-16 md:w-35"
+              />
+              <span className="text-lg md:text-4xl primary-text-color">
+                Học tập qua trò chơi
+              </span>
+            </div>
+            <div className="mx-auto">
+              <img
+                src="/assets/students/Slide 4/Slide 4.7.png"
+                alt=""
+                className="w-1/2 md:w-2/7 mx-auto"
+              />
             </div>
           </div>
-          <div className="flex">
-            <div className="w-1/2">
-              <div className="flex items-center justify-center">
-                <img
-                  src="/assets/students/Slide 4/Slide 4.1.png"
-                  alt="Slide 4.1.png"
-                  className="w-35"
-                />
-                <span className="text-4xl primary-text-color">
-                  Cá nhân hóa lộ trình học tập
-                </span>
-              </div>
-              <div className="mx-auto">
-                <img
-                  src="/assets/students/Slide 4/Slide 4.5.png"
-                  alt=""
-                  className="w-2/7 mx-auto"
-                />
-              </div>
 
-              <div className="flex  items-center justify-center">
-                <img
-                  src="/assets/students/Slide 4/Slide 4.3.png"
-                  alt="Slide 4.3.png"
-                  className="w-35"
-                />
-                <span className="text-4xl primary-text-color mr-30">
-                  Học tập qua trò chơi
-                </span>
-              </div>
-              <div className="mx-auto">
-                <img
-                  src="/assets/students/Slide 4/Slide 4.7.png"
-                  alt=""
-                  className="w-2/7 mx-auto"
-                />
-              </div>
+          {/* Cột phải */}
+          <div className="w-full md:w-1/2 space-y-6 md:space-y-10 mt-6 md:mt-0">
+            <div className="flex md:flex-row items-center justify-center gap-2 md:gap-4">
+              <img
+                src="/assets/students/Slide 4/Slide 4.2.png"
+                alt="Slide 4.2.png"
+                className="w-16 md:w-35"
+              />
+              <span className="text-lg md:text-4xl primary-text-color">
+                Nhạc hóa kiến thức
+              </span>
             </div>
-            <div className="w-1/2">
-              <div className="flex  items-center justify-center mr-20">
-                <img
-                  src="/assets/students/Slide 4/Slide 4.2.png"
-                  alt="Slide 4.2.png"
-                  className="w-35"
-                />
-                <span className="text-4xl primary-text-color">
-                  Nhạc hóa kiến thức
-                </span>
-              </div>
-              <div className="mx-auto">
-                <img
-                  src="/assets/students/Slide 4/Slide 4.6.png"
-                  alt=""
-                  className="w-2/7 mx-auto"
-                />
-              </div>
+            <div className="mx-auto">
+              <img
+                src="/assets/students/Slide 4/Slide 4.6.png"
+                alt=""
+                className="w-1/2 md:w-2/7 mx-auto"
+              />
+            </div>
 
-              <div className="flex  items-center justify-center">
-                <img
-                  src="/assets/students/Slide 4/Slide 4.4.png"
-                  alt="Slide 4.1.png"
-                  className="w-35"
-                />
-                <span className="text-4xl primary-text-color">
-                  Bảng xếp hạng học tập
-                </span>
-              </div>
-              <div className="mx-auto">
-                <img
-                  src="/assets/students/Slide 4/Slide 4.8.png"
-                  alt=""
-                  className="w-2/7 mx-auto"
-                />
-              </div>
+            <div className="flex md:flex-row items-center justify-center gap-2 md:gap-4">
+              <img
+                src="/assets/students/Slide 4/Slide 4.4.png"
+                alt="Slide 4.4.png"
+                className="w-16 md:w-35"
+              />
+              <span className="text-lg md:text-4xl primary-text-color">
+                Bảng xếp hạng học tập
+              </span>
+            </div>
+            <div className="mx-auto">
+              <img
+                src="/assets/students/Slide 4/Slide 4.8.png"
+                alt=""
+                className="w-1/2 md:w-2/7 mx-auto"
+              />
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
+
 function Section4() {
   return (
-    <>
-      <div className="h-full mx-10 flex justify-between relative pt-35">
-        <div className="text-center w-full">
-          <div className="mb-1">
-            <h1 className="text-6xl primary-text-color">
-              Chuẩn kiến thức cùng
-              <br />
-              GV Ngôi Sao Hoàng Mai
-            </h1>
+    <div className="h-full mx-4 md:mx-10 flex justify-between relative pt-17 md:pt-35">
+      <div className="text-center w-full">
+        {/* Heading */}
+        <div className="mb-1">
+          <h1 className="text-2xl md:text-6xl primary-text-color leading-snug">
+            Chuẩn kiến thức cùng <br />
+            GV Ngôi Sao Hoàng Mai
+          </h1>
+        </div>
+
+        {/* Teacher cards */}
+        <div className="grid grid-cols-2 md:flex items-start justify-center gap-2 md:gap-6">
+          {/* Card 1 */}
+          <div className="mt-6 md:mt-10 w-full md:w-auto">
+            <img
+              src="/assets/students/Slide 5/Slide 5.1.png"
+              alt=""
+              className="w-40 md:w-90 mx-auto"
+            />
+            <div className="w-full md:w-fit mx-auto text-center md:text-left m-2 md:ml-20">
+              <p className="text-lg md:text-3xl primary-text-color">
+                Giáo viên
+              </p>
+              <p className="text-lg md:text-3xl primary-text-color">
+                Lê Thị Thu Trang
+              </p>
+              <p className="bg-red-200 inline-block p-1 primary-text-color text-sm md:text-xl">
+                Creative Project Lead
+              </p>
+              <ul className="md:list-disc list-none primary-text-color mx-4 text-sm md:text-base">
+                <li>Thạc sĩ Giáo dục học</li>
+                <li>
+                  Cử nhân bằng Giỏi SP <br /> Toán Tiếng Anh
+                </li>
+                <li>Top 10 AI Super Teacher 2025</li>
+              </ul>
+            </div>
           </div>
-          <div className="flex items-center justify-center flex-wrap">
-            <div className="mt-10">
-              <img
-                src="/assets/students/Slide 5/Slide 5.1.png"
-                alt=""
-                className="w-90"
-              />
-              <div className="w-fit mx-auto text-left m-2 ml-20">
-                <p className=" text-3xl primary-text-color">Giáo viên</p>
-                <p className=" text-3xl primary-text-color">Lê Thị Thu Trang</p>
-                <p className="bg-red-200 inline-block p-1 primary-text-color text-xl">
-                  Creative Project Lead
-                </p>
-                <ul className="list-disc primary-text-color mx-4">
-                  <li>Thạc sĩ Giáo dục học</li>
-                  <li>
-                    Cử nhân bằng Giỏi SP
-                    <br />
-                    Toán Tiếng Anh
-                  </li>
-                  <li>Top 10 AI Super Teacher 2025</li>
-                </ul>
-              </div>
-            </div>
 
-            <div>
-              <img
-                src="/assets/students/Slide 5/Slide 5.2.png"
-                alt=""
-                className="w-90"
-              />
-              <div className="w-fit mx-auto text-left m-2 ml-20">
-                <p className=" text-3xl primary-text-color">Giáo viên</p>
-                <p className=" text-3xl primary-text-color">Bùi Thu Trang</p>
-                <p className="bg-red-200 inline-block p-1 primary-text-color text-xl">
-                  Web Developer
-                </p>
-                <ul className="list-disc primary-text-color mx-4">
-                  <li>Cử nhân SP Tin học Top</li>
-                  <li>Top 10 AI Super Teacher 2025</li>
-                </ul>
-              </div>
+          {/* Card 2 */}
+          <div className="mt-6 w-full md:mt-10 md:w-auto">
+            <img
+              src="/assets/students/Slide 5/Slide 5.2.png"
+              alt=""
+              className="w-40 md:w-90 mx-auto"
+            />
+            <div className="w-full md:w-fit mx-auto text-center md:text-left m-2 md:ml-20">
+              <p className="text-lg md:text-3xl primary-text-color">
+                Giáo viên
+              </p>
+              <p className="text-lg md:text-3xl primary-text-color">
+                Bùi Thu Trang
+              </p>
+              <p className="bg-red-200 inline-block p-1 primary-text-color text-sm md:text-xl">
+                Web Developer
+              </p>
+              <ul className="md:list-disc list-none primary-text-color mx-4 text-sm md:text-base">
+                <li>Cử nhân SP Tin học Top</li>
+                <li>Top 10 AI Super Teacher 2025</li>
+              </ul>
             </div>
+          </div>
 
-            <div>
-              <img
-                src="/assets/students/Slide 5/Slide 5.3.png"
-                alt=""
-                className="w-90"
-              />
-              <div className="w-fit mx-auto text-left m-2 ml-20">
-                <p className=" text-3xl primary-text-color">Giáo viên</p>
-                <p className=" text-3xl primary-text-color">Nguyễn Thị Lan</p>
-                <p className="bg-red-200 inline-block p-1 primary-text-color text-xl">
-                  UI/UX Designer
-                </p>
-                <ul className="list-disc primary-text-color mx-4">
-                  <li>
-                    Cử nhân bằng Xuất sắc
-                    <br />
-                    SP Vật Lí Tiếng Anh
-                  </li>
-                  <li>Top 4 AI Super Teacher 2025</li>
-                </ul>
-              </div>
+          {/* Card 3 */}
+          <div className="w-full md:mt-10 md:w-auto">
+            <img
+              src="/assets/students/Slide 5/Slide 5.3.png"
+              alt=""
+              className="w-40 md:w-90 mx-auto"
+            />
+            <div className="w-full md:w-fit mx-auto text-center md:text-left m-2 md:ml-20">
+              <p className="text-lg md:text-3xl primary-text-color">
+                Giáo viên
+              </p>
+              <p className="text-lg md:text-3xl primary-text-color">
+                Nguyễn Thị Lan
+              </p>
+              <p className="bg-red-200 inline-block p-1 primary-text-color text-sm md:text-xl">
+                UI/UX Designer
+              </p>
+              <ul className="md:list-disc list-none primary-text-color mx-4 text-sm md:text-base">
+                <li>
+                  Cử nhân bằng Xuất sắc <br /> SP Vật Lí Tiếng Anh
+                </li>
+                <li>Top 4 AI Super Teacher 2025</li>
+              </ul>
             </div>
+          </div>
 
-            <div>
-              <img
-                src="/assets/students/Slide 5/Slide 5.4.png"
-                alt=""
-                className="w-90"
-              />
-              <div className="w-fit mx-auto text-left m-2 ml-20">
-                <p className=" text-3xl primary-text-color">Giáo viên</p>
-                <p className=" text-3xl primary-text-color">Trịnh Minh Dung</p>
-                <p className="bg-red-200 inline-block p-1 primary-text-color text-xl">
-                  Academic Advisor
-                </p>
-                <ul className="list-disc primary-text-color mx-4">
-                  <li>
-                    Cử nhân bằng Giỏi SP
-                    <br />
-                    Vật Lí Tiếng Anh
-                  </li>
-                  <li>Top 4 AI Super Teacher 2025</li>
-                </ul>
-              </div>
+          {/* Card 4 */}
+          <div className="w-full md:mt-10 md:w-auto">
+            <img
+              src="/assets/students/Slide 5/Slide 5.4.png"
+              alt=""
+              className="w-40 md:w-90 mx-auto"
+            />
+            <div className="w-full md:w-fit mx-auto text-center md:text-left m-2 md:ml-20">
+              <p className="text-lg md:text-3xl primary-text-color">
+                Giáo viên
+              </p>
+              <p className="text-lg md:text-3xl primary-text-color">
+                Trịnh Minh Dung
+              </p>
+              <p className="bg-red-200 inline-block p-1 primary-text-color text-sm md:text-xl">
+                Academic Advisor
+              </p>
+              <ul className="md:list-disc list-none primary-text-color mx-4 text-sm md:text-base">
+                <li>
+                  Cử nhân bằng Giỏi SP <br /> Vật Lí Tiếng Anh
+                </li>
+                <li>Top 4 AI Super Teacher 2025</li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
+
 function Section5() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    fullName: "",
-    birthDate: null,
-    className: "",
     username: "",
     password: "",
+    full_name: "",
+    email: "",
+    role: "student", // mặc định là student
+    class_id: "", // khớp với backend
   });
 
   const [message, setMessage] = useState("");
-  const [showCalendar, setShowCalendar] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -320,112 +345,103 @@ function Section5() {
     }));
   };
 
-  const handleDateChange = (date) => {
-    setFormData((prev) => ({
-      ...prev,
-      birthDate: date,
-    }));
-    setShowCalendar(false);
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    // navigate("/login");
 
+    // validate cơ bản
     if (
-      !formData.fullName ||
-      !formData.birthDate ||
-      !formData.className ||
+      !formData.full_name ||
       !formData.username ||
-      !formData.password
+      !formData.password ||
+      !formData.email
     ) {
       setMessage("Vui lòng điền đầy đủ thông tin!");
       return;
     }
-
     if (formData.password.length < 6) {
       setMessage("Mật khẩu phải có ít nhất 6 ký tự!");
       return;
     }
 
-    console.log("Đăng ký thành công:", formData);
-    setMessage("Đăng ký thành công! 🎉");
+    try {
+      const res = await register(formData); // gọi API
+      console.log("Register success:", res);
+      setMessage("Đăng ký thành công! 🎉");
 
-    setTimeout(() => {
-      setFormData({
-        fullName: "",
-        birthDate: null,
-        className: "",
-        username: "",
-        password: "",
-      });
-      setMessage("");
-    }, 2000);
+      // reset form
+      setTimeout(() => {
+        setFormData({
+          username: "",
+          password: "",
+          full_name: "",
+          email: "",
+          role: "student",
+          class_id: "",
+        });
+        setMessage("");
+      }, 2000);
+    } catch (err) {
+      console.error(err);
+      setMessage("Đăng ký thất bại!");
+    }
   };
 
   return (
-    <div className="h-full mx-10 flex justify-between relative pt-40">
-      <div className="max-w-4xl mx-auto">
+    <div className="h-full mx-4 md:mx-10 flex justify-between relative pt-20 md:pt-40">
+      <div className="max-w-4xl mx-auto w-full">
         <div className="mb-5 text-center">
-          <h1 className="text-6xl primary-text-color">Đăng Kí</h1>
+          <h1 className="text-2xl md:text-6xl primary-text-color">Đăng Kí</h1>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6 md:space-y-8 md:mr-15"
+        >
           {/* Họ tên */}
-          <div className="flex items-center gap-8">
-            <label className="primary-text-color text-2xl w-48">Họ tên</label>
+          <div className="flex md:flex-row items-center gap-4 md:gap-8">
+            <label className="primary-text-color text-base md:text-2xl w-1/3 md:w-48">
+              Họ tên
+            </label>
             <input
               type="text"
-              name="fullName"
-              value={formData.fullName}
+              name="full_name"
+              value={formData.full_name}
               onChange={handleInputChange}
-              className="px-20 py-4 text-center rounded-full border-2 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-lg w-[500px]"
+              className="px-4 md:px-20 py-3 md:py-4 text-center rounded-full border-2 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-sm md:text-lg w-full md:w-[500px]"
             />
           </div>
 
-          {/* Ngày sinh */}
-          <div className="flex items-center gap-8 relative">
-            <label className="primary-text-color text-2xl w-48">
-              Ngày sinh
+          {/* Email */}
+          <div className="flex md:flex-row items-center gap-4 md:gap-8">
+            <label className="primary-text-color text-base md:text-2xl w-1/3 md:w-48">
+              Email
             </label>
-            <div className="w-[500px]">
-              <input
-                type="text"
-                readOnly
-                value={
-                  formData.birthDate
-                    ? formData.birthDate.toLocaleDateString("vi-VN")
-                    : ""
-                }
-                onClick={() => setShowCalendar(!showCalendar)}
-                className="w-full px-10 py-4 text-center rounded-full border-2 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-lg cursor-pointer"
-              />
-              {showCalendar && (
-                <div className="absolute z-50 mt-2 shadow-lg border border-orange-300 rounded-lg bg-white">
-                  <Calendar
-                    onChange={handleDateChange}
-                    value={formData.birthDate}
-                    locale="vi-VN"
-                    className="p-4"
-                  />
-                </div>
-              )}
-            </div>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              className="px-4 md:px-20 py-3 md:py-4 text-center rounded-full border-2 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-sm md:text-lg w-full md:w-[500px]"
+            />
           </div>
 
           {/* Lớp */}
-          <div className="flex items-center gap-8">
-            <label className="primary-text-color text-2xl w-48">Lớp</label>
+          <div className="flex md:flex-row items-center gap-4 md:gap-8">
+            <label className="primary-text-color text-base md:text-2xl w-1/3 md:w-48">
+              Lớp
+            </label>
             <input
               type="text"
-              name="className"
-              value={formData.className}
+              name="class_id"
+              value={formData.class_id}
               onChange={handleInputChange}
-              className="px-20 py-4 text-center rounded-full border-2 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-lg w-[500px]"
+              className="px-4 md:px-20 py-3 md:py-4 text-center rounded-full border-2 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-sm md:text-lg w-full md:w-[500px]"
             />
           </div>
 
           {/* Tên đăng nhập */}
-          <div className="flex items-center gap-8">
-            <label className="primary-text-color text-2xl w-48">
+          <div className="flex md:flex-row items-center gap-4 md:gap-8">
+            <label className="primary-text-color text-base md:text-2xl w-1/3 md:w-48">
               Tên đăng nhập
             </label>
             <input
@@ -433,19 +449,21 @@ function Section5() {
               name="username"
               value={formData.username}
               onChange={handleInputChange}
-              className="px-20 py-4 text-center rounded-full border-2 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-lg w-[500px]"
+              className="px-4 md:px-20 py-3 md:py-4 text-center rounded-full border-2 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-sm md:text-lg w-full md:w-[500px]"
             />
           </div>
 
           {/* Mật khẩu */}
-          <div className="flex items-center gap-8">
-            <label className="primary-text-color text-2xl w-48">Mật khẩu</label>
+          <div className="flex md:flex-row items-center gap-4 md:gap-8">
+            <label className="primary-text-color text-base md:text-2xl w-1/3 md:w-48">
+              Mật khẩu
+            </label>
             <input
               type="password"
               name="password"
               value={formData.password}
               onChange={handleInputChange}
-              className="px-20 py-4 text-center rounded-full border-2 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-lg w-[500px]"
+              className="px-4 md:px-20 py-3 md:py-4 text-center rounded-full border-2 border-orange-400 bg-white focus:outline-none focus:border-orange-500 text-sm md:text-lg w-full md:w-[500px]"
             />
           </div>
 
@@ -453,7 +471,7 @@ function Section5() {
           <div className="flex justify-center mt-8">
             <button
               type="submit"
-              className="bg-[#ef7131] text-white font-semibold text-xl px-20 py-5 ml-10 rounded-full cursor-pointer hover:from-purple-600 hover:to-pink-600 transition-all transform hover:scale-105 shadow-lg mb-10"
+              className="bg-[#ef7131] text-white font-semibold text-base md:text-xl px-8 md:px-20 py-3 md:py-5 rounded-full"
             >
               Đăng ký
             </button>
@@ -462,7 +480,7 @@ function Section5() {
           {/* Thông báo */}
           {message && (
             <div
-              className={`text-center text-lg font-semibold ${
+              className={`text-center text-sm md:text-lg font-semibold ${
                 message.includes("thành công")
                   ? "text-green-600"
                   : "text-red-600"
@@ -472,11 +490,6 @@ function Section5() {
             </div>
           )}
         </form>
-
-        {/* Decorative circle */}
-        <div className="fixed bottom-8 right-8">
-          <div className="w-24 h-24 bg-gradient-to-br from-pink-400 to-pink-500 rounded-full shadow-lg"></div>
-        </div>
       </div>
     </div>
   );

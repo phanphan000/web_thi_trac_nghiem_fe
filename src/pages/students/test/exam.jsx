@@ -156,7 +156,7 @@ export default function QuizApp({
         src="/assets/students/Slide 15/38.png"
         className="absolute bottom-0 right-0 w-3/8 object-contain object-bottom z-30 "
       />
-      <div className="w-full max-w-3xl z-10">
+      <div className="w-full max-w-4xl z-10">
         <header className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-2xl font-bold">Bài kiểm tra vui</h2>

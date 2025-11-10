@@ -1,12 +1,15 @@
 import React from "react";
-import { ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, Menu, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const Header = ({ isLoggedIn, onLogout, onRegisterClick }) => {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
-  const handleLogout = () => {
+  const handleLogout = (e) => {
+    e.preventDefault();
     if (onLogout) onLogout(); // gọi hàm cha xử lý đăng xuất
     navigate("/"); // điều hướng về trang chủ
   };
@@ -17,34 +20,47 @@ const Header = ({ isLoggedIn, onLogout, onRegisterClick }) => {
   };
 
   return (
-    <header className="bg-[var(--color-background)] fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 md:px-8 h-30 overflow-hidden">
-      <div className="w-100 cursor-pointer mx-4 ml-8">
+    <header className="bg-[var(--color-background)] fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-4 md:px-8 py-4">
+      {/* Logo */}
+      <div className="cursor-pointer ml-4 md:ml-8">
         <Link to="/">
-          <img src="/assets/students/Slide 2/Slide 2.1.png" alt="logo" />
+          <img
+            src="/assets/students/Slide 2/Slide 2.1.png"
+            alt="logo"
+            className="w-24 md:w-50"
+          />
         </Link>
       </div>
-      <div className="px-10 mx-6 items-center container">
-        {/* Nếu chưa đăng nhập */}
+
+      {/* Hamburger button (mobile only) */}
+      <button
+        className="md:hidden text-[var(--color-secondary)]"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        {isOpen ? <X size={28} /> : <Menu size={28} />}
+      </button>
+
+      {/* Navigation */}
+      <div className="hidden md:flex px-10 mx-6 items-center">
         {!isLoggedIn ? (
-          <nav className="flex gap-4 justify-end mt-5">
+          <nav className="flex gap-4 justify-end">
             <button
               onClick={() => navigate("/login")}
-              className="flex items-center justify-center py-6 px-16 rounded-4xl font-bold text-2xl
-           bg-[#ffecca] text-[var(--color-secondary)] shadow-md cursor-pointer hover:scale-103 transition-transform"
+              className="py-3 px-6 md:py-6 md:px-12 rounded-4xl font-bold text-lg md:text-2xl
+              bg-[#ffecca] text-[var(--color-secondary)] shadow-md hover:scale-105 transition-transform"
             >
               Đăng nhập
             </button>
             <button
               onClick={handleRegisterClick}
-              className="flex items-center justify-center py-6 px-12 rounded-4xl font-bold text-2xl
-           bg-[var(--color-secondary)] text-white shadow-md cursor-pointer hover:scale-103 transition-transform"
+              className="py-3 px-6 md:py-4 md:px-8 rounded-4xl font-bold text-lg md:text-2xl
+              bg-[var(--color-secondary)] text-white shadow-md hover:scale-105 transition-transform"
             >
-              Đăng ký ngay <ArrowRight size={25} />
+              Đăng ký ngay <ArrowRight size={20} className="inline-block" />
             </button>
           </nav>
         ) : (
-          // Nếu đã đăng nhập
-          <nav className="flex items-center gap-20 justify-end text-2xl primary-text-color">
+          <nav className="flex items-center gap-10 justify-end text-lg md:text-2xl primary-text-color">
             <Link to="/test" className="hover:text-[var(--color-secondary)]">
               Test
             </Link>
@@ -60,24 +76,80 @@ const Header = ({ isLoggedIn, onLogout, onRegisterClick }) => {
             <Link to="/results" className="hover:text-[var(--color-secondary)]">
               Kết quả
             </Link>
-            <div className="flex items-center justify-center">
+            <div className="flex items-center gap-2">
               <button
                 onClick={handleLogout}
-                className="px-3 py-1 rounded transition hover:text-[var(--color-secondary)] cursor-pointer"
+                className="px-3 py-1 rounded transition hover:text-[var(--color-secondary)]"
               >
                 Đăng xuất
               </button>
-              <div className="rounded-full">
-                <img
-                  src="/assets/students/Slide 2/Slide 2.1.png"
-                  alt=""
-                  className="w-20"
-                />
-              </div>
+              <img
+                src="/assets/students/Slide 2/Slide 2.1.png"
+                alt="avata user"
+                className="w-12 md:w-20 rounded-full"
+              />
             </div>
           </nav>
         )}
       </div>
+
+      {/* Mobile menu */}
+      {isOpen && (
+        <div className="absolute top-full left-0 w-full bg-[var(--color-background)] shadow-md md:hidden">
+          {!isLoggedIn ? (
+            <nav className="flex flex-col gap-4 p-4">
+              <button
+                onClick={() => navigate("/login")}
+                className="py-2 px-4 rounded font-bold text-lg
+                bg-[#ffecca] text-[var(--color-secondary)] shadow-md"
+              >
+                Đăng nhập
+              </button>
+              <button
+                onClick={handleRegisterClick}
+                className="py-2 px-4 rounded font-bold text-lg
+                bg-[var(--color-secondary)] text-white shadow-md"
+              >
+                Đăng ký ngay <ArrowRight size={18} className="inline-block" />
+              </button>
+            </nav>
+          ) : (
+            <nav className="flex flex-col gap-4 p-4 text-lg primary-text-color">
+              <Link to="/test" className="hover:text-[var(--color-secondary)]">
+                Test
+              </Link>
+              <Link
+                to="/subjects"
+                className="hover:text-[var(--color-secondary)]"
+              >
+                Môn học
+              </Link>
+              <Link to="/tool" className="hover:text-[var(--color-secondary)]">
+                Công cụ
+              </Link>
+              <Link
+                to="/results"
+                className="hover:text-[var(--color-secondary)]"
+              >
+                Kết quả
+              </Link>
+              <div className="flex justify-between">
+                <button
+                  onClick={handleLogout}
+                  className="py-1 rounded transition hover:text-[var(--color-secondary)]"
+                >
+                  Đăng xuất
+                </button>
+                <img
+                  src="/assets/students/Slide 2/Slide 2.1.png"
+                  alt="avata user"
+                  className="w-12 md:w-20 rounded-full"
+                />
+              </div>
+            </nav>
+          )}
+        </div>
+      )}
     </header>
   );
 };
