@@ -16,7 +16,7 @@ import ToolGame from "./pages/students/tool/tooldetail/ToolGame";
 import ToolQuiz from "./pages/students/tool/tooldetail/ToolQuiz";
 import ToolMusic from "./pages/students/tool/tooldetail/ToolMusic";
 //import các trang học sinh-->test
-import Test from "./pages/students/test/index";
+import Index from "./pages/students/test/index";
 import Instructions from "./pages/students/test/instructions";
 import Exam from "./pages/students/test/exam";
 // import các trang học sinh--->Results
@@ -42,27 +42,19 @@ import ScienceQuizDetail from "./pages/students/subjects/science/quiz/ScienceQui
 
 function App() {
   const [goToSection, setGoToSection] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-  };
 
   return (
     <Router>
       <ArrowCursorProvider>
-        <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} />
+        <Header
+          onLogout={() => {
+            localStorage.removeItem("token");
+          }}
+        />
         <Routes>
           <Route
             element={
               <MainLayout
-                isLoggedIn={isLoggedIn}
-                onLogin={() => setIsLoggedIn(true)}
-                onLogout={() => setIsLoggedIn(false)}
                 onRegisterClick={() => {
                   setGoToSection(4);
                   setTimeout(() => setGoToSection(null), 200);
@@ -70,85 +62,79 @@ function App() {
               />
             }
           >
+            {/* Public routes */}
             <Route path="/" element={<Home goToSection={goToSection} />} />
-            <Route
-              path="/login"
-              element={<Login onLogin={handleLogin} />}
-            />{" "}
-            {/* -------------------Route của test/ ----------------------------*/}
-            <Route
-              path="/test"
-              element={
-                <PrivateRoute isLoggedIn={isLoggedIn}>
-                  <Test />
-                </PrivateRoute>
-              }
-            />
-            <Route path="/test/instructions" element={<Instructions />} />
-            <Route path="/test/exam" element={<Exam />} />
-            {/* --------------------------Route của tool/----------------------------- */}
-            <Route path="/tool" element={<ToolList />} />
-            <Route path="/tool/game" element={<ToolGame />} />
-            <Route path="/tool/quiz" element={<ToolQuiz />} />
-            <Route path="/tool/music" element={<ToolMusic />} />
-            {/* --------------------Route của Results--------------------- */}
-            <Route path="/results" element={<Results />}></Route>
-            {/*------------------- Route của subjects/ ----------------------------*/}
-            <Route path="/subjects" element={<SubjectList />} />
-            <Route path="/subjects/:subjectId" element={<LearningMethods />} />
-            {/*------------------------- Route của math -----------------------------*/}
-            <Route
-              path="/subjects/math/music"
-              element={<TopicMathMusicDetail />}
-            ></Route>
-            <Route
-              path="/subjects/math/game"
-              element={<TopicMathGameDetail />}
-            ></Route>
-            <Route
-              path="/subjects/math/quiz"
-              element={<MathQuizList />}
-            ></Route>
-            <Route
-              path="/subjects/math/quiz/:id"
-              element={<MathQuizDetail />}
-            ></Route>
-            {/* ----------------------------Route của tin học ---------------------------------*/}
-            <Route
-              path="/subjects/informatics/music"
-              element={<TopicInforMusicDetail />}
-            ></Route>
-            <Route
-              path="/subjects/informatics/game"
-              element={<TopicInforGameDetail />}
-            ></Route>
-            <Route
-              path="/subjects/informatics/quiz"
-              element={<InforQuizList />}
-            ></Route>
-            <Route
-              path="/subjects/informatics/quiz/:id"
-              element={<InforQuizDetail />}
-            ></Route>
-            {/*--------------------------- Route của khoa học ----------------------------------*/}
-            <Route
-              path="/subjects/science/music"
-              element={<TopicScienceMusicDetail />}
-            ></Route>
-            <Route
-              path="/subjects/science/game"
-              element={<TopicScienceGameDetail />}
-            ></Route>
-            <Route
-              path="/subjects/science/quiz"
-              element={<ScienceQuizList />}
-            ></Route>
-            <Route
-              path="/subjects/science/quiz/:id"
-              element={<ScienceQuizDetail />}
-            ></Route>
-            {/* Trang 404 */}
-            <Route path="/404" element={<NotFound />} />
+            <Route path="/login" element={<Login />} />
+
+            {/* Private routes */}
+            <Route element={<PrivateRoute />}>
+              <Route path="/test" element={<Index />} />
+              <Route path="/test/instructions" element={<Instructions />} />
+              <Route path="/test/exam" element={<Exam />} />
+
+              <Route path="/tool" element={<ToolList />} />
+              <Route path="/tool/game" element={<ToolGame />} />
+              <Route path="/tool/quiz" element={<ToolQuiz />} />
+              <Route path="/tool/music" element={<ToolMusic />} />
+
+              <Route path="/results" element={<Results />} />
+
+              <Route path="/subjects" element={<SubjectList />} />
+              <Route
+                path="/subjects/:subjectId"
+                element={<LearningMethods />}
+              />
+
+              <Route
+                path="/subjects/math/music"
+                element={<TopicMathMusicDetail />}
+              />
+              <Route
+                path="/subjects/math/game"
+                element={<TopicMathGameDetail />}
+              />
+              <Route path="/subjects/math/quiz" element={<MathQuizList />} />
+              <Route
+                path="/subjects/math/quiz/:id"
+                element={<MathQuizDetail />}
+              />
+
+              <Route
+                path="/subjects/informatics/music"
+                element={<TopicInforMusicDetail />}
+              />
+              <Route
+                path="/subjects/informatics/game"
+                element={<TopicInforGameDetail />}
+              />
+              <Route
+                path="/subjects/informatics/quiz"
+                element={<InforQuizList />}
+              />
+              <Route
+                path="/subjects/informatics/quiz/:id"
+                element={<InforQuizDetail />}
+              />
+
+              <Route
+                path="/subjects/science/music"
+                element={<TopicScienceMusicDetail />}
+              />
+              <Route
+                path="/subjects/science/game"
+                element={<TopicScienceGameDetail />}
+              />
+              <Route
+                path="/subjects/science/quiz"
+                element={<ScienceQuizList />}
+              />
+              <Route
+                path="/subjects/science/quiz/:id"
+                element={<ScienceQuizDetail />}
+              />
+            </Route>
+
+            {/* 404 */}
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

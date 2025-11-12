@@ -146,7 +146,7 @@ export default function QuizApp({
   const progress = Math.round((index / questions.length) * 100);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-30 bg-[var(--color-blackground)] primary-text-color">
+    <div className="min-h-screen flex items-center justify-center p-30 bg-[var(--color-blackground)] primary-text-color mr-10">
       <img
         src="/assets/students/Slide 2/Slide 2.3.png"
         alt="Login Background"
@@ -154,7 +154,7 @@ export default function QuizApp({
       />
       <img
         src="/assets/students/Slide 15/38.png"
-        className="absolute bottom-0 right-0 w-3/8 object-contain object-bottom z-30 "
+        className="absolute bottom-0 -right-15 w-2/7 object-contain object-bottom z-30 "
       />
       <div className="w-full max-w-4xl z-10">
         <header className="flex items-center justify-between mb-4">

@@ -1,17 +1,16 @@
 import React from "react";
-import { useState } from "react";
 import { ArrowRight, Menu, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-const Header = ({ isLoggedIn, onLogout, onRegisterClick }) => {
+const Header = ({ onLogout, onRegisterClick }) => {
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
+  const token = localStorage.getItem("token"); // kiểm tra token
 
-  const handleLogout = (e) => {
-    e.preventDefault();
-    if (onLogout) onLogout(); // gọi hàm cha xử lý đăng xuất
-    navigate("/"); // điều hướng về trang chủ
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    if (onLogout) onLogout();
+    navigate("/login");
   };
 
   const handleRegisterClick = () => {
@@ -33,16 +32,16 @@ const Header = ({ isLoggedIn, onLogout, onRegisterClick }) => {
       </div>
 
       {/* Hamburger button (mobile only) */}
-      <button
+      {/* <button
         className="md:hidden text-[var(--color-secondary)]"
         onClick={() => setIsOpen(!isOpen)}
       >
         {isOpen ? <X size={28} /> : <Menu size={28} />}
-      </button>
+      </button> */}
 
       {/* Navigation */}
       <div className="hidden md:flex px-10 mx-6 items-center">
-        {!isLoggedIn ? (
+        {!token ? (
           <nav className="flex gap-4 justify-end">
             <button
               onClick={() => navigate("/login")}
@@ -85,7 +84,7 @@ const Header = ({ isLoggedIn, onLogout, onRegisterClick }) => {
               </button>
               <img
                 src="/assets/students/Slide 2/Slide 2.1.png"
-                alt="avata user"
+                alt="avatar user"
                 className="w-12 md:w-20 rounded-full"
               />
             </div>
@@ -94,7 +93,7 @@ const Header = ({ isLoggedIn, onLogout, onRegisterClick }) => {
       </div>
 
       {/* Mobile menu */}
-      {isOpen && (
+      {/* {isOpen && (
         <div className="absolute top-full left-0 w-full bg-[var(--color-background)] shadow-md md:hidden">
           {!isLoggedIn ? (
             <nav className="flex flex-col gap-4 p-4">
@@ -149,7 +148,7 @@ const Header = ({ isLoggedIn, onLogout, onRegisterClick }) => {
             </nav>
           )}
         </div>
-      )}
+      )} */}
     </header>
   );
 };

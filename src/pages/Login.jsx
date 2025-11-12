@@ -2,37 +2,25 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/auth";
 
-const Login = ({ onLogin }) => {
+const Login = () => {
   const navigate = useNavigate();
-
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-  });
-
+  const [formData, setFormData] = useState({ username: "", password: "" });
   const [message, setMessage] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const res = await login(formData); // gọi API login
-      console.log("Login success:", res);
-
-      // lưu token vào localStorage (đã có trong auth.js)
-      if (onLogin) onLogin(res.user);
-
-      setMessage("Đăng nhập thành công! 🎉");
-
-      // chuyển hướng sang trang test
-      navigate("/test");
+      if (res.token) {
+        localStorage.setItem("token", res.token); // lưu token
+        setMessage("Đăng nhập thành công! 🎉");
+        navigate("/test");
+      }
     } catch (err) {
       console.error(err);
       setMessage("Tên đăng nhập hoặc mật khẩu không đúng!");

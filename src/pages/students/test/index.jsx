@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const index = () => {
+const Index = () => {
   const navigate = useNavigate();
   return (
     <div className="h-full flex justify-between items-center pt-40 bg-[var(--color-background)]">
@@ -37,4 +37,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
