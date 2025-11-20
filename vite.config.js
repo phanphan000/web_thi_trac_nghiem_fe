@@ -9,4 +9,9 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'), // alias @ trỏ đến thư mục src
     },
   },
+  server: {
+    proxy: {
+      "/api": "http://localhost:8000"
+    }
+  }
 });

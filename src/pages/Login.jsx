@@ -15,11 +15,26 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await login(formData); // gọi API login
+      const res = await login(formData);
+      console.log("Login response:", res);
+
       if (res.token) {
-        localStorage.setItem("token", res.token); // lưu token
+        localStorage.setItem("token", res.token);
+
+        // lấy role từ mảng roles
+        const role = res.roles && res.roles.length > 0 ? res.roles[0] : null;
+        localStorage.setItem("role", role);
+
         setMessage("Đăng nhập thành công! 🎉");
-        navigate("/test");
+
+        // điều hướng theo role
+        if (role === "student") {
+          navigate("/test");
+        } else if (role === "teacher") {
+          navigate("/teacher");
+        } else if (role === "admin") {
+          navigate("/admin");
+        }
       }
     } catch (err) {
       console.error(err);

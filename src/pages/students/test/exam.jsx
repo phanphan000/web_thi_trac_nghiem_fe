@@ -1,34 +1,68 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function QuizApp({
-  questions = SAMPLE_QUESTIONS,
-  timePerQuiz = 600,
-}) {
+export default function QuizApp() {
   const navigate = useNavigate();
+  const [questions, setQuestions] = useState([]);
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState(null);
-  const [answers, setAnswers] = useState(Array(questions.length).fill(null));
+  const [answers, setAnswers] = useState([]);
   const [showAnswer, setShowAnswer] = useState(false);
   const [showIncompleteWarning, setShowIncompleteWarning] = useState(false);
   const [score, setScore] = useState(null);
-  const [timeLeft, setTimeLeft] = useState(timePerQuiz); // in seconds
+  const [timeLeft, setTimeLeft] = useState(null); // in seconds
+  const [duration, setDuration] = useState(0); // phút
   const timerRef = useRef(null);
 
   useEffect(() => {
-    // start timer
-    timerRef.current = setInterval(() => {
-      setTimeLeft((t) => t - 1);
-    }, 1000);
-    return () => clearInterval(timerRef.current);
-  }, []);
+    if (duration > 0) {
+      setTimeLeft(duration * 60);
+      clearInterval(timerRef.current);
+      timerRef.current = setInterval(() => {
+        setTimeLeft((t) => t - 1);
+      }, 1000);
+      return () => clearInterval(timerRef.current);
+    }
+  }, [duration]);
 
   useEffect(() => {
-    if (timeLeft <= 0) {
+    if (timeLeft !== null && timeLeft <= 0) {
       clearInterval(timerRef.current);
       finishQuiz();
     }
   }, [timeLeft]);
+
+  useEffect(() => {
+    async function fetchQuestions() {
+      try {
+        const res = await fetch("/api/tests/latest"); // test_id mới nhất
+        const data = await res.json();
+        console.log("API response1:", data);
+        console.log("Questions from API:", data.questions);
+
+        // map dữ liệu từ DB sang format giống SAMPLE_QUESTIONS
+        const mapped = (data.questions || []).map((q) => ({
+          id: q.id, // id câu hỏi từ DB
+          title: q.question_text, // nội dung câu hỏi
+          options: [q.option_a, q.option_b, q.option_c, q.option_d], // mảng đáp án
+          correct: q.correct_answer,
+          explanation: q.explanation || "", // nếu có cột giải thích
+          image: q.image || null,
+        }));
+
+        setQuestions(mapped);
+        setAnswers(Array(mapped.length).fill(null)); // reset answers theo số câu hỏi
+        // lấy duration từ test (đơn vị phút) và đổi sang giây
+        const durationMinutes = data.test.duration;
+        setDuration(durationMinutes);
+        setTimeLeft(durationMinutes * 60);
+      } catch (err) {
+        console.error("Error fetching questions:", err);
+      }
+    }
+
+    fetchQuestions();
+  }, []);
 
   function handleSelect(optionIndex) {
     if (showAnswer) return; // don't change after showing
@@ -50,19 +84,51 @@ export default function QuizApp({
     }, 900);
   }
 
-  function finishQuiz(finalAnswers = answers) {
+  async function finishQuiz(finalAnswers = answers, forceSubmit = false) {
+    console.log(">>> finishQuiz được gọi <<<", finalAnswers);
     const unanswered = finalAnswers.filter((a) => a === null).length;
 
-    if (unanswered > 0) {
+    if (unanswered > 0 && !forceSubmit) {
       setShowIncompleteWarning(true);
-      return;
+      return; // dừng lại, chờ user chọn nút
     }
-
-    const s = finalAnswers.reduce((acc, a, i) => {
-      return acc + (a === questions[i].correct ? 1 : 0);
-    }, 0);
-    setScore(s);
+    console.log("Cấu trúc questions:", questions);
     clearInterval(timerRef.current);
+    // Chuẩn bị payload gửi lên backend
+    const res = await fetch("/api/tests/latest"); // test_id mới nhất
+    const data = await res.json();
+    console.log("cấu trúc data:", data);
+
+    const letters = ["A", "B", "C", "D"];
+    const payload = {
+      answers: questions.map((q, i) => ({
+        question_id: q.id, // id câu hỏi từ DB
+        selected_answer:
+          finalAnswers[i] !== null ? letters[finalAnswers[i]] : null, // đáp án học sinh chọn (A/B/C/D)
+      })),
+    };
+    console.log("Payload gửi lên BE:", payload);
+    // Lưu id của test
+    const testId = data.test.id; // hoặc data.id nếu format khác
+    // setTestId(testId);
+    try {
+      const res = await fetch(`/api/tests/${testId}/submit`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      console.log("Kết quả từ backend:", data);
+
+      // Backend trả về score đã tính
+      setScore(data.score);
+    } catch (err) {
+      console.error("Error submitting quiz:", err);
+    }
   }
 
   function restart() {
@@ -71,7 +137,8 @@ export default function QuizApp({
     setAnswers(Array(questions.length).fill(null));
     setShowAnswer(false);
     setScore(null);
-    setTimeLeft(timePerQuiz);
+    setTimeLeft(duration * 60);
+    clearInterval(timerRef.current);
     timerRef.current = setInterval(() => setTimeLeft((t) => t - 1), 1000);
   }
 
@@ -79,6 +146,9 @@ export default function QuizApp({
   useEffect(() => {
     function onKey(e) {
       if (score !== null) return;
+
+      const currentQuestion = questions[index];
+      if (!currentQuestion) return; // nếu chưa có câu hỏi thì thoát
       if (
         e.key >= "1" &&
         e.key <= String(Math.min(4, questions[index].options.length))
@@ -112,7 +182,7 @@ export default function QuizApp({
         />
         <img
           src="/assets/students/Slide 15/38.png"
-          className="absolute bottom-0 right-0 w-3/8 object-contain object-bottom z-20 "
+          className="absolute bottom-0 -right-15 w-2/7 object-contain object-bottom z-30  "
         />
         <div className="bg-white rounded-2xl shadow-xl p-8 max-w-xl w-full text-center z-10">
           <h1 className="text-3xl font-extrabold">Kết quả</h1>
@@ -200,11 +270,10 @@ export default function QuizApp({
                   />
                 )}
                 <div className="mt-2 grid gap-3">
-                  {q.options.map((opt, i) => {
+                  {(q?.options || []).map((opt, i) => {
                     const isSelected = selected === i || answers[index] === i;
                     const isCorrect = q.correct === i;
                     const reveal = showAnswer && (isCorrect || isSelected);
-
                     return (
                       <button
                         key={i}
@@ -316,16 +385,7 @@ export default function QuizApp({
                 </p>
                 <div className="mt-4 flex justify-center gap-3">
                   <button
-                    onClick={() => {
-                      const s = answers.reduce(
-                        (acc, a, i) =>
-                          acc + (a === questions[i].correct ? 1 : 0),
-                        0
-                      );
-                      setScore(s);
-                      clearInterval(timerRef.current);
-                      setShowIncompleteWarning(false);
-                    }}
+                    onClick={() => finishQuiz(answers, true)}
                     className="px-4 py-2 rounded bg-yellow-400 hover:bg-yellow-500 text-white font-semibold"
                   >
                     Vẫn nộp bài
@@ -358,222 +418,3 @@ function formatTime(sec) {
     .padStart(2, "0");
   return `${m}:${s}`;
 }
-
-const SAMPLE_QUESTIONS = [
-  {
-    title: "Con mèo kêu như thế nào?",
-    options: ["Gâu gâu", "Meo meo", "Ò ó o", "Ụt ịt"],
-    correct: 1,
-    explanation: "Con mèo thường kêu meo meo.",
-    image: null,
-  },
-  {
-    title: "Trái đất quay quanh gì?",
-    options: ["Mặt trăng", "Sao Hỏa", "Mặt trời", "Sao Kim"],
-    correct: 2,
-    explanation: "Trái đất quay quanh Mặt trời.",
-    image: null,
-  },
-  {
-    title: "1 mét bằng bao nhiêu centimet?",
-    options: ["10", "100", "1000", "10000"],
-    correct: 1,
-    explanation: "1 mét bằng 100 centimet.",
-    image: null,
-  },
-  {
-    title: "Ai phát minh ra bóng đèn điện?",
-    options: ["Newton", "Einstein", "Edison", "Tesla"],
-    correct: 2,
-    explanation: "Thomas Edison là người phát minh ra bóng đèn điện.",
-    image: null,
-  },
-  {
-    title: "Việt Nam nằm ở châu lục nào?",
-    options: ["Châu Phi", "Châu Âu", "Châu Á", "Châu Mỹ"],
-    correct: 2,
-    explanation: "Việt Nam nằm ở châu Á.",
-    image: null,
-  },
-  {
-    title: "Thủ đô của Việt Nam là gì?",
-    options: ["Hà Nội", "Huế", "Đà Nẵng", "TP.HCM"],
-    correct: 0,
-    explanation: "Thủ đô của Việt Nam là Hà Nội.",
-    image: null,
-  },
-  {
-    title: "Nước sôi ở nhiệt độ bao nhiêu độ C?",
-    options: ["50", "75", "90", "100"],
-    correct: 3,
-    explanation: "Nước sôi ở 100°C (áp suất thường).",
-    image: null,
-  },
-  {
-    title: "Hành tinh nào gần Mặt trời nhất?",
-    options: ["Trái đất", "Sao Kim", "Sao Thủy", "Sao Hỏa"],
-    correct: 2,
-    explanation: "Sao Thủy là hành tinh gần Mặt trời nhất.",
-    image: null,
-  },
-  {
-    title: "Từ nào sau đây là danh từ?",
-    options: ["Chạy", "Đẹp", "Ngôi nhà", "Nhanh"],
-    correct: 2,
-    explanation: "“Ngôi nhà” là danh từ (chỉ sự vật).",
-    image: null,
-  },
-  {
-    title: "Quốc kỳ Việt Nam có màu gì?",
-    options: ["Xanh và trắng", "Đỏ và vàng", "Đen và đỏ", "Trắng và xanh"],
-    correct: 1,
-    explanation: "Quốc kỳ Việt Nam có nền đỏ và ngôi sao vàng ở giữa.",
-    image: null,
-  },
-  {
-    title: "Một năm có bao nhiêu tháng?",
-    options: ["10", "11", "12", "13"],
-    correct: 2,
-    explanation: "Một năm có 12 tháng.",
-    image: null,
-  },
-  {
-    title: "Chữ cái đầu tiên trong bảng chữ cái tiếng Việt là gì?",
-    options: ["B", "A", "C", "D"],
-    correct: 1,
-    explanation: "Chữ cái đầu tiên là A.",
-    image: null,
-  },
-  {
-    title: "Trong toán học, π (pi) xấp xỉ bằng bao nhiêu?",
-    options: ["2.14", "3.14", "4.13", "3.41"],
-    correct: 1,
-    explanation: "Số π (pi) xấp xỉ 3.14.",
-    image: null,
-  },
-  {
-    title: "Con người dùng cơ quan nào để nghe?",
-    options: ["Mũi", "Mắt", "Tai", "Miệng"],
-    correct: 2,
-    explanation: "Tai là cơ quan dùng để nghe.",
-    image: null,
-  },
-  {
-    title: "Ngày Quốc khánh Việt Nam là ngày nào?",
-    options: ["1/5", "2/9", "30/4", "20/11"],
-    correct: 1,
-    explanation: "Ngày Quốc khánh Việt Nam là 2/9.",
-    image: null,
-  },
-  {
-    title: "Tháng Hai có bao nhiêu ngày (năm thường)?",
-    options: ["28", "29", "30", "31"],
-    correct: 0,
-    explanation: "Tháng Hai có 28 ngày trong năm thường.",
-    image: null,
-  },
-  {
-    title: "Mặt trăng là vệ tinh của hành tinh nào?",
-    options: ["Sao Kim", "Trái đất", "Sao Hỏa", "Sao Thủy"],
-    correct: 1,
-    explanation: "Mặt trăng là vệ tinh tự nhiên của Trái đất.",
-    image: null,
-  },
-  {
-    title: "Phương tiện nào di chuyển trên không?",
-    options: ["Ô tô", "Máy bay", "Tàu hỏa", "Xe đạp"],
-    correct: 1,
-    explanation: "Máy bay di chuyển trên không.",
-    image: null,
-  },
-  {
-    title: "Hình nào có 3 cạnh?",
-    options: ["Hình tròn", "Hình vuông", "Hình tam giác", "Hình chữ nhật"],
-    correct: 2,
-    explanation: "Hình tam giác có 3 cạnh.",
-    image: null,
-  },
-  {
-    title: "Cầu thủ dùng gì để đá bóng?",
-    options: ["Tay", "Đầu", "Chân", "Gối"],
-    correct: 2,
-    explanation: "Cầu thủ chủ yếu dùng chân để đá bóng.",
-    image: null,
-  },
-  {
-    title: "Tác giả của truyện 'Dế Mèn phiêu lưu ký' là ai?",
-    options: ["Nam Cao", "Ngô Tất Tố", "Tô Hoài", "Nguyễn Du"],
-    correct: 2,
-    explanation: "Tác giả là nhà văn Tô Hoài.",
-    image: null,
-  },
-  {
-    title: "Ngọn núi cao nhất thế giới là gì?",
-    options: ["Phan Xi Păng", "Everest", "Alpes", "Kilimanjaro"],
-    correct: 1,
-    explanation: "Everest là ngọn núi cao nhất thế giới.",
-    image: null,
-  },
-  {
-    title: "Trái tim nằm ở bên nào của cơ thể người?",
-    options: ["Bên phải", "Bên trái", "Giữa", "Sau lưng"],
-    correct: 1,
-    explanation: "Trái tim nằm lệch về bên trái.",
-    image: null,
-  },
-  {
-    title: "Loài chim nào có thể bắt chước tiếng người?",
-    options: ["Chim sẻ", "Chim công", "Chim vẹt", "Chim én"],
-    correct: 2,
-    explanation: "Chim vẹt có thể bắt chước tiếng người.",
-    image: null,
-  },
-  {
-    title: "Mùa nào thường có thời tiết nóng nhất?",
-    options: ["Xuân", "Hạ", "Thu", "Đông"],
-    correct: 1,
-    explanation: "Mùa hạ (mùa hè) là mùa nóng nhất.",
-    image: null,
-  },
-  {
-    title: "Cơ quan nào giúp con người hô hấp?",
-    options: ["Tim", "Phổi", "Gan", "Thận"],
-    correct: 1,
-    explanation: "Phổi giúp con người hô hấp (hít thở).",
-    image: null,
-  },
-  {
-    title: "Số nhỏ nhất trong các số sau: 5, 2, 8, 10?",
-    options: ["5", "2", "8", "10"],
-    correct: 1,
-    explanation: "Số nhỏ nhất là 2.",
-    image: null,
-  },
-  {
-    title: "Tác phẩm 'Truyện Kiều' do ai sáng tác?",
-    options: ["Nguyễn Du", "Ngô Tất Tố", "Xuân Diệu", "Nam Cao"],
-    correct: 0,
-    explanation: "Tác phẩm 'Truyện Kiều' do Nguyễn Du sáng tác.",
-    image: null,
-  },
-  {
-    title: "Biển nào lớn nhất thế giới?",
-    options: ["Biển Đông", "Thái Bình Dương", "Đại Tây Dương", "Ấn Độ Dương"],
-    correct: 1,
-    explanation: "Thái Bình Dương là đại dương lớn nhất thế giới.",
-    image: null,
-  },
-  {
-    title: "Loài động vật nào sau đây biết bay?",
-    options: ["Cá", "Rắn", "Chim", "Hổ"],
-    correct: 2,
-    explanation: "Chim là loài động vật biết bay.",
-    image: null,
-  },
-];
-
-// Notes for integration:
-// - Nạp câu hỏi thực tế bằng cách truyền prop `questions` = [{title, options, correct, explanation, image}]
-// - Thiết lập `timePerQuiz` (giây) nếu muốn giới hạn thời gian
-// - Tích hợp âm thanh, hiệu ứng confetti (framer-motion / canvas) nếu muốn thêm phần sinh động
-// - Tailwind cần được cấu hình sẵn trong dự án (content paths) để classnames hoạt động

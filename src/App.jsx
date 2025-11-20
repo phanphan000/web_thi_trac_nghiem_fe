@@ -39,7 +39,8 @@ import TopicScienceMusicDetail from "./pages/students/subjects/science/music/Top
 import TopicScienceGameDetail from "./pages/students/subjects/science/game/TopicScienceGameDetail";
 import ScienceQuizList from "./pages/students/subjects/science/quiz/ScienceQuizList";
 import ScienceQuizDetail from "./pages/students/subjects/science/quiz/ScienceQuizDetail";
-
+// import các trang teacher
+import QuestionRatioSettings from "./pages/teacher/QuestionRatioSettings";
 function App() {
   const [goToSection, setGoToSection] = useState(null);
 
@@ -65,6 +66,7 @@ function App() {
             {/* Public routes */}
             <Route path="/" element={<Home goToSection={goToSection} />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/teacher" element={<QuestionRatioSettings />} />
 
             {/* Private routes */}
             <Route element={<PrivateRoute />}>

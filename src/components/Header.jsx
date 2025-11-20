@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ArrowRight, Menu, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 const Header = ({ onLogout, onRegisterClick }) => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token"); // kiểm tra token
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -32,12 +33,12 @@ const Header = ({ onLogout, onRegisterClick }) => {
       </div>
 
       {/* Hamburger button (mobile only) */}
-      {/* <button
+      <button
         className="md:hidden text-[var(--color-secondary)]"
         onClick={() => setIsOpen(!isOpen)}
       >
         {isOpen ? <X size={28} /> : <Menu size={28} />}
-      </button> */}
+      </button>
 
       {/* Navigation */}
       <div className="hidden md:flex px-10 mx-6 items-center">
@@ -93,12 +94,15 @@ const Header = ({ onLogout, onRegisterClick }) => {
       </div>
 
       {/* Mobile menu */}
-      {/* {isOpen && (
+      {isOpen && (
         <div className="absolute top-full left-0 w-full bg-[var(--color-background)] shadow-md md:hidden">
-          {!isLoggedIn ? (
+          {!token ? (
             <nav className="flex flex-col gap-4 p-4">
               <button
-                onClick={() => navigate("/login")}
+                onClick={() => {
+                  navigate("/login");
+                  setIsOpen(false);
+                }}
                 className="py-2 px-4 rounded font-bold text-lg
                 bg-[#ffecca] text-[var(--color-secondary)] shadow-md"
               >
@@ -114,20 +118,30 @@ const Header = ({ onLogout, onRegisterClick }) => {
             </nav>
           ) : (
             <nav className="flex flex-col gap-4 p-4 text-lg primary-text-color">
-              <Link to="/test" className="hover:text-[var(--color-secondary)]">
+              <Link
+                to="/test"
+                onClick={() => setIsOpen(false)}
+                className="hover:text-[var(--color-secondary)]"
+              >
                 Test
               </Link>
               <Link
                 to="/subjects"
+                onClick={() => setIsOpen(false)}
                 className="hover:text-[var(--color-secondary)]"
               >
                 Môn học
               </Link>
-              <Link to="/tool" className="hover:text-[var(--color-secondary)]">
+              <Link
+                to="/tool"
+                onClick={() => setIsOpen(false)}
+                className="hover:text-[var(--color-secondary)]"
+              >
                 Công cụ
               </Link>
               <Link
                 to="/results"
+                onClick={() => setIsOpen(false)}
                 className="hover:text-[var(--color-secondary)]"
               >
                 Kết quả
@@ -141,14 +155,14 @@ const Header = ({ onLogout, onRegisterClick }) => {
                 </button>
                 <img
                   src="/assets/students/Slide 2/Slide 2.1.png"
-                  alt="avata user"
+                  alt="avatar user"
                   className="w-12 md:w-20 rounded-full"
                 />
               </div>
             </nav>
           )}
         </div>
-      )} */}
+      )}
     </header>
   );
 };
